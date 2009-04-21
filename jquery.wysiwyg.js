@@ -346,6 +346,11 @@
                     width     : ( newX - 8 ).toString() + 'px'
                 }).attr('id', $(element).attr('id') + 'IFrame');
 
+                /**
+                 * http://code.google.com/p/jwysiwyg/issues/detail?id=96
+                 */
+                this.editor.attr('tabindex', $(element).attr('tabindex'));
+
                 if ( $.browser.msie )
                 {
                     this.editor

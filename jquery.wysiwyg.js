@@ -383,23 +383,26 @@
             .before(this.element);
 
             this.viewHTML = false;
-
             this.initialHeight = newY - 8;
 
             /**
              * @link http://code.google.com/p/jwysiwyg/issues/detail?id=52
              */
             this.initialContent = $(element).val();
-
             this.initFrame();
 
             if ( this.initialContent.length == 0 )
                 this.setContent('');
 
-            if ( this.options.autoSave )
-                $('form').submit(function() { self.saveContent(); });
+            /**
+             * http://code.google.com/p/jwysiwyg/issues/detail?id=100
+             */
+            var form = $(element).parents('form:first');
 
-            $('form').bind('reset', function()
+            if ( this.options.autoSave )
+                $(form).submit(function() { self.saveContent(); });
+
+            $(form).bind('reset', function()
             {
                 self.setContent( self.initialContent );
                 self.saveContent();

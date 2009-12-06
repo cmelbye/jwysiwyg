@@ -1,5 +1,5 @@
 /**
- * WYSIWYG - jQuery plugin 0.5
+ * WYSIWYG - jQuery plugin 0.6
  *
  * Copyright (c) 2008-2009 Juan M Martinez
  * http://plugins.jquery.com/project/jWYSIWYG
@@ -14,7 +14,7 @@
 {
     $.fn.document = function()
     {
-        var element = this[0];
+        var element = this.get(0);
 
         if ( element.nodeName.toLowerCase() == 'iframe' )
             return element.contentWindow.document;
@@ -29,7 +29,7 @@
 
     $.fn.documentSelection = function()
     {
-        var element = this[0];
+        var element = this.get(0);
 
         if ( element.contentWindow.document.selection )
             return element.contentWindow.document.selection.createRange().text;
@@ -72,7 +72,7 @@
             delete options.controls;
         }
 
-        var options = $.extend({
+        options = $.extend({
             html : '<'+'?xml version="1.0" encoding="UTF-8"?'+'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body>INITIAL_CONTENT</body></html>',
             css  : {},
 
@@ -118,6 +118,7 @@
 
             if ( self.constructor == Wysiwyg && szURL && szURL.length > 0 )
             {
+                if ($.browser.msie) self.focus();
                 if ( attributes )
                 {
                     self.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
@@ -150,11 +151,35 @@
 
                 if ( selection.length > 0 )
                 {
+                    if ($.browser.msie) self.focus();
                     self.editorDoc.execCommand('unlink', false, []);
                     self.editorDoc.execCommand('createLink', false, szURL);
                 }
                 else if ( self.options.messages.nonSelection )
                     alert(self.options.messages.nonSelection);
+            }
+        },
+
+        insertHtml : function( szHTML )
+        {
+            var self = $.data(this, 'wysiwyg');
+
+            if ( self.constructor == Wysiwyg && szHTML && szHTML.length > 0 )
+            {
+                if ($.browser.msie)
+                {
+                    self.focus();
+                    self.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
+                    var img = self.getElementByAttributeValue('img', 'src', '#jwysiwyg#');
+                    if (img)
+                    {
+                        $(img).replaceWith(szHTML);
+                    }
+                }
+                else
+                {
+                    self.editorDoc.execCommand('insertHTML', false, szHTML);
+                }
             }
         },
 
@@ -221,7 +246,10 @@
                     if ( selection.length > 0 )
                     {
                         if ( $.browser.msie )
+                        {
+                            this.focus();
                             this.editorDoc.execCommand('createLink', true, null);
+                        }
                         else
                         {
                             var szURL = prompt('URL', 'http://');
@@ -245,7 +273,10 @@
                 exec    : function()
                 {
                     if ( $.browser.msie )
+                    {
+                        this.focus();
                         this.editorDoc.execCommand('insertImage', true, null);
+                    }
                     else
                     {
                         var szURL = prompt('URL', 'http://');
@@ -304,6 +335,7 @@
                 visible : true,
                 exec    : function()
                 {
+                    if ($.browser.msie) this.focus();
                     this.editorDoc.execCommand('removeFormat', false, []);
                     this.editorDoc.execCommand('unlink', false, []);
                 }
@@ -318,6 +350,11 @@
 
         element  : null,
         editor   : null,
+
+        focus : function()
+        {
+            $(this.editorDoc.body).focus();
+        },
 
         init : function( element, options )
         {
@@ -373,14 +410,16 @@
             this.element = $('<div></div>').css({
                 width : ( newX > 0 ) ? ( newX ).toString() + 'px' : '100%'
             }).addClass('wysiwyg')
-              .append(panel)
-              .append( $('<div><!-- --></div>').css({ clear : 'both' }) )
-              .append(editor);
+                .append(panel)
+                .append( $('<div><!-- --></div>').css({ clear : 'both' }) )
+                .append(editor)
+		;
 
             $(element)
             // .css('display', 'none')
-            .hide()
-            .before(this.element);
+                .hide()
+                .before(this.element)
+		;
 
             this.viewHTML = false;
             this.initialHeight = newY - 8;
@@ -397,12 +436,14 @@
             /**
              * http://code.google.com/p/jwysiwyg/issues/detail?id=100
              */
-            var form = $(element).parents('form:first');
+            var form = $(element).closest('form');
 
             if ( this.options.autoSave )
-                $(form).submit(function() { self.saveContent(); });
+	    {
+                form.submit(function() { self.saveContent(); });
+	    }
 
-            $(form).bind('reset', function()
+            form.bind('reset', function()
             {
                 self.setContent( self.initialContent );
                 self.saveContent();
@@ -418,7 +459,9 @@
              * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
              */
             if ( this.options.css && this.options.css.constructor == String )
+	    {
                 style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
+	    }
 
             this.editorDoc = $(this.editor).document();
             this.editorDoc_designMode = false;
@@ -443,6 +486,7 @@
                     .replace(/STYLE_SHEET/, style)
             );
             this.editorDoc.close();
+
             this.editorDoc.contentEditable = 'true';
 
             if ( $.browser.msie )
@@ -463,7 +507,7 @@
              */
             $(this.original).focus(function()
             {
-                $(self.editorDoc.body).focus();
+                self.focus();
             });
 
             if ( this.options.autoSave )
@@ -501,12 +545,12 @@
                 if ( $.browser.msie && self.options.brIE && event.keyCode == 13 )
                 {
                     var rng = self.getRange();
-                        rng.pasteHTML('<br />');
-                        rng.collapse(false);
-                        rng.select();
-
-    				return false;
+                    rng.pasteHTML('<br />');
+                    rng.collapse(false);
+                    rng.select();
+                    return false;
                 }
+                return true;
             });
         },
 
@@ -553,7 +597,9 @@
                 var content = this.getContent();
 
                 if ( this.options.rmUnwantedBr )
+		{
                     content = ( content.substr(-4) == '<br>' ) ? content.substr(0, content.length - 4) : content;
+		}
 
                 $(this.original).val(content);
             }
@@ -562,7 +608,7 @@
         appendMenu : function( cmd, args, className, fn )
         {
             var self = this;
-            var args = args || [];
+            args = args || [];
 
             $('<li></li>').append(
                 $('<a><!-- --></a>').addClass(className || cmd)
@@ -617,7 +663,7 @@
 
                         if ( $.inArray(elm.tagName.toLowerCase(), control.tags) != -1 )
                             $('.' + className, this.panel).addClass('active');
-                    } while ( elm = elm.parentNode );
+                    } while ((elm = elm.parentNode));
                 }
 
                 if ( control.css )
@@ -631,7 +677,7 @@
                         for ( var cssProperty in control.css )
                             if ( elm.css(cssProperty).toString().toLowerCase() == control.css[cssProperty] )
                                 $('.' + className, this.panel).addClass('active');
-                    } while ( elm = elm.parent() );
+                    } while ((elm = elm.parent()));
                 }
             }
         },

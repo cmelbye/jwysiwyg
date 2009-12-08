@@ -515,7 +515,10 @@
              */
             $(this.original).focus(function()
             {
-                self.focus();
+                if (!$.browser.msie)
+                {
+                    self.focus();
+                }
             });
 
             if ( this.options.autoSave )

@@ -17,14 +17,15 @@
         var element = this.get(0);
 
         if ( element.nodeName.toLowerCase() == 'iframe' )
+        {
             return element.contentWindow.document;
             /*
             return ( $.browser.msie )
                 ? document.frames[element.id].document
                 : element.contentWindow.document // contentDocument;
              */
-        else
-            return $(this);
+        }
+        return this;
     };
 
     $.fn.documentSelection = function()
@@ -482,8 +483,11 @@
             this.editorDoc.open();
             this.editorDoc.write(
                 this.options.html
-                    .replace(/INITIAL_CONTENT/, this.initialContent)
-                    .replace(/STYLE_SHEET/, style)
+                    /**
+                     * @link http://code.google.com/p/jwysiwyg/issues/detail?id=144
+                     */
+                    .replace(/INITIAL_CONTENT/, function() { return self.initialContent; })
+                    .replace(/STYLE_SHEET/, function() { return style; })
             );
             this.editorDoc.close();
 

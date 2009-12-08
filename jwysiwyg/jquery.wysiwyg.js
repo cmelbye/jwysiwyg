@@ -422,7 +422,6 @@
 		;
 
             $(element)
-            // .css('display', 'none')
                 .hide()
                 .before(this.element)
 		;
@@ -614,6 +613,27 @@
             }
         },
 
+        withoutCss: function()
+        {
+            if ($.browser.mozilla)
+            {
+                try
+                {
+                    this.editorDoc.execCommand('styleWithCSS', false, false);
+                }
+                catch (e)
+                {
+                    try
+                    {
+                        this.editorDoc.execCommand('useCSS', false, true);
+                    }
+                    catch (e)
+                    {
+                    }
+                }
+            }
+        },
+
         appendMenu : function( cmd, args, className, fn, tooltip )
         {
             var self = this;
@@ -624,7 +644,11 @@
                     .addClass(className || cmd)
                     .attr('title', tooltip)
             ).mousedown(function() {
-                if ( fn ) fn.apply(self); else self.editorDoc.execCommand(cmd, false, args);
+                if ( fn ) fn.apply(self); else
+                {
+                    self.withoutCss();
+                    self.editorDoc.execCommand(cmd, false, args);
+                }
                 if ( self.options.autoSave ) self.saveContent();
             }).appendTo( this.panel );
         },

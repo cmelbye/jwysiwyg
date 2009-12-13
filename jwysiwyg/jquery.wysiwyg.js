@@ -643,7 +643,7 @@
             args = args || [];
 
             $('<li></li>').append(
-                $('<a>' + (className || cmd) + '</a>')
+                $('<a href="javascript:;">' + (className || cmd) + '</a>')
                     .addClass(className || cmd)
                     .attr('title', tooltip)
             ).mousedown(function() {

@@ -410,7 +410,7 @@
                 }
             }
 
-            var panel = this.panel = $('<ul></ul>').addClass('panel');
+            var panel = this.panel = $('<ul role="menu" class="panel"></ul>');
 
             this.appendControls();
             this.element = $('<div></div>').css({
@@ -643,10 +643,10 @@
             args = args || [];
 
             $('<li></li>').append(
-                $('<a href="javascript:;">' + (className || cmd) + '</a>')
+                $('<a role="menuitem" tabindex="-1" href="javascript:;">' + (className || cmd) + '</a>')
                     .addClass(className || cmd)
                     .attr('title', tooltip)
-            ).mousedown(function() {
+            ).click(function() {
                 if ( fn ) fn.apply(self); else
                 {
                     self.withoutCss();
@@ -658,7 +658,7 @@
 
         appendMenuSeparator : function()
         {
-            $('<li class="separator"></li>').appendTo( this.panel );
+            $('<li role="separator" class="separator"></li>').appendTo( this.panel );
         },
 
         appendControls : function()

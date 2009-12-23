@@ -71,7 +71,7 @@
 			{
 				params[i - 1] = arguments[i];
 			}
-			if ( action in Wysiwyg )
+			if (action in Wysiwyg)
 			{
 				return this.each(function()
 				{
@@ -92,38 +92,38 @@
 		 * If the user set custom controls, we catch it, and merge with the
 		 * defaults controls later.
 		 */
-		if ( options && options.controls )
+		if (options && options['controls'])
 		{
-			controls = options.controls;
-			delete options.controls;
+			controls = options['controls'];
+			delete options['controls'];
 		}
 
 		options = $.extend({
-			html : '<'+'?xml version="1.0" encoding="UTF-8"?'+'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
-			css  : {},
+			"html": '<'+'?xml version="1.0" encoding="UTF-8"?'+'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
+			"css": {},
 
-			debug		: false,
+			"debug": false,
 
-			autoSave	 : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=11
-			rmUnwantedBr : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=15
-			brIE		 : true,
+			"autoSave" : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=11
+			"rmUnwantedBr" : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=15
+			"brIE" : true,
 
-			controls : {},
-			messages : {}
+			"controls" : {},
+			"messages" : {}
 		}, options);
 
-		options.messages = $.extend(true, options.messages, Wysiwyg.MSGS_EN);
-		options.controls = $.extend(true, options.controls, Wysiwyg.TOOLBAR);
+		options['messages'] = $.extend(true, options['messages'], Wysiwyg['MSGS_EN']);
+		options['controls'] = $.extend(true, options['controls'], Wysiwyg['TOOLBAR']);
 
-		for ( var control in controls )
+		for (var control in controls)
 		{
-			if ( control in options.controls )
+			if (control in options['controls'])
 			{
-				$.extend(options.controls[control], controls[control]);
+				$.extend(options['controls'][control], controls[control]);
 			}
 			else
 			{
-				options.controls[control] = controls[control];
+				options['controls'][control] = controls[control];
 			}
 		}
 
@@ -238,39 +238,39 @@
 			"strikeThrough" : { "visible" : true, "tags" : ['s', 'strike'], "css" : { "textDecoration" : 'line-through' }, "tooltip" : "Strike-through" },
 			"underline"     : { "visible" : true, "tags" : ['u'], "css" : { "textDecoration" : 'underline' }, "tooltip" : "Underline" },
 
-			separator00 : { visible : true, separator : true },
+			separator00 : { "visible": true, "separator": true },
 
-			"justifyLeft"   : { visible : true, css : { textAlign : 'left' }, tooltip : "Justify Left" },
-			"justifyCenter" : { visible : true, tags : ['center'], css : { textAlign : 'center' }, tooltip : "Justify Center" },
-			"justifyRight"  : { visible : true, css : { textAlign : 'right' }, tooltip : "Justify Right" },
-			"justifyFull"   : { visible : true, css : { textAlign : 'justify' }, tooltip : "Justify Full" },
+			"justifyLeft"   : { "visible": true, "css": { "textAlign": 'left' }, "tooltip": "Justify Left" },
+			"justifyCenter" : { "visible": true, "tags": ['center'], "css": { "textAlign": 'center' }, "tooltip": "Justify Center" },
+			"justifyRight"  : { "visible": true, "css": { "textAlign": 'right' }, "tooltip": "Justify Right" },
+			"justifyFull"   : { "visible": true, "css": { "textAlign": 'justify' }, "tooltip": "Justify Full" },
 
-			separator01 : { visible : true, separator : true },
+			separator01 : { "visible": true, "separator": true },
 
-			"indent"  : { visible : true, tooltip : "Indent" },
-			"outdent" : { visible : true, tooltip : "Outdent" },
+			"indent"  : { "visible": true, "tooltip": "Indent" },
+			"outdent" : { "visible": true, "tooltip": "Outdent" },
 
-			separator02 : { visible : false, separator : true },
+			separator02 : { "visible": false, "separator": true },
 
-			"subscript"   : { visible : true, tags : ['sub'], tooltip : "Subscript" },
-			"superscript" : { visible : true, tags : ['sup'], tooltip : "Superscript" },
+			"subscript"   : { "visible": true, "tags": ['sub'], "tooltip": "Subscript" },
+			"superscript" : { "visible": true, "tags": ['sup'], "tooltip": "Superscript" },
 
-			separator03 : { visible : true, separator : true },
+			separator03 : { "visible": true, "separator": true },
 
-			"undo" : { visible : true, tooltip : "Undo" },
-			"redo" : { visible : true, tooltip : "Redo" },
+			"undo" : { "visible": true, "tooltip": "Undo" },
+			"redo" : { "visible": true, "tooltip": "Redo" },
 
-			separator04 : { visible : true, separator : true },
+			separator04 : { "visible": true, "separator": true },
 
-			"insertOrderedList"    : { visible : true, tags : ['ol'], tooltip : "Insert Ordered List" },
-			"insertUnorderedList"  : { visible : true, tags : ['ul'], tooltip : "Insert Unordered List" },
-			"insertHorizontalRule" : { visible : true, tags : ['hr'], tooltip : "Insert Horizontal Rule" },
+			"insertOrderedList"    : { "visible": true, "tags": ['ol'], "tooltip": "Insert Ordered List" },
+			"insertUnorderedList"  : { "visible": true, "tags": ['ul'], "tooltip": "Insert Unordered List" },
+			"insertHorizontalRule" : { "visible": true, "tags": ['hr'], "tooltip": "Insert Horizontal Rule" },
 
-			separator05 : { separator : true },
+			separator05 : { "separator": true },
 
 			"createLink" : {
-				visible : true,
-				exec    : function()
+				"visible": true,
+				"exec"   : function()
 				{
 					var selection = $(this.editor).documentSelection();
 
@@ -297,14 +297,13 @@
 						alert(this.options.messages.nonSelection);
 					}
 				},
-
-				tags : ['a'],
-				tooltip : "Create link"
+				"tags": ['a'],
+				"tooltip": "Create link"
 			},
 
 			"insertImage" : {
-				visible : true,
-				exec	: function()
+				"visible": true,
+				"exec"   : function()
 				{
 					if ( $.browser.msie )
 					{
@@ -321,37 +320,36 @@
 						}
 					}
 				},
-
-				tags : ['img'],
-				tooltip : "Insert image"
+				"tags": ['img'],
+				"tooltip": "Insert image"
 			},
 
-			separator06 : { separator : true },
+			separator06 : { "separator": true },
 
-			"h1mozilla" : { visible : true && $.browser.mozilla, className : 'h1', command : 'heading', arguments : ['h1'], tags : ['h1'], tooltip : "Header 1" },
-			"h2mozilla" : { visible : true && $.browser.mozilla, className : 'h2', command : 'heading', arguments : ['h2'], tags : ['h2'], tooltip : "Header 2" },
-			"h3mozilla" : { visible : true && $.browser.mozilla, className : 'h3', command : 'heading', arguments : ['h3'], tags : ['h3'], tooltip : "Header 3" },
+			"h1mozilla" : { "visible": true && $.browser.mozilla, "className": 'h1', "command": 'heading', arguments : ['h1'], "tags": ['h1'], "tooltip": "Header 1" },
+			"h2mozilla" : { "visible": true && $.browser.mozilla, "className": 'h2', "command": 'heading', arguments : ['h2'], "tags": ['h2'], "tooltip": "Header 2" },
+			"h3mozilla" : { "visible": true && $.browser.mozilla, "className": 'h3', "command": 'heading', arguments : ['h3'], "tags": ['h3'], "tooltip": "Header 3" },
 
-			"h1" : { visible : true && !( $.browser.mozilla ), className : 'h1', command : 'formatBlock', arguments : ['<H1>'], tags : ['h1'], tooltip : "Header 1" },
-			"h2" : { visible : true && !( $.browser.mozilla ), className : 'h2', command : 'formatBlock', arguments : ['<H2>'], tags : ['h2'], tooltip : "Header 2" },
-			"h3" : { visible : true && !( $.browser.mozilla ), className : 'h3', command : 'formatBlock', arguments : ['<H3>'], tags : ['h3'], tooltip : "Header 3" },
+			"h1" : { "visible": true && !( $.browser.mozilla ), "className": 'h1', "command": 'formatBlock', arguments : ['<H1>'], "tags": ['h1'], "tooltip": "Header 1" },
+			"h2" : { "visible": true && !( $.browser.mozilla ), "className": 'h2', "command": 'formatBlock', arguments : ['<H2>'], "tags": ['h2'], "tooltip": "Header 2" },
+			"h3" : { "visible": true && !( $.browser.mozilla ), "className": 'h3', "command": 'formatBlock', arguments : ['<H3>'], "tags": ['h3'], "tooltip": "Header 3" },
 
-			separator07 : { visible : false, separator : true },
+			separator07 : { "visible": false, "separator": true },
 
-			"cut"   : { visible : false, tooltip : "Cut" },
-			"copy"  : { visible : false, tooltip : "Copy" },
-			"paste" : { visible : false, tooltip : "Paste" },
+			"cut"   : { "visible": false, "tooltip": "Cut" },
+			"copy"  : { "visible": false, "tooltip": "Copy" },
+			"paste" : { "visible": false, "tooltip": "Paste" },
 
-			separator08 : { separator : false && !( $.browser.msie ) },
+			separator08 : { "separator": false && !( $.browser.msie ) },
 
-			"increaseFontSize" : { visible : false && !( $.browser.msie ), tags : ['big'], tooltip : "Increase font size" },
-			"decreaseFontSize" : { visible : false && !( $.browser.msie ), tags : ['small'], tooltip : "Decrease font size" },
+			"increaseFontSize" : { "visible": false && !( $.browser.msie ), "tags": ['big'], "tooltip": "Increase font size" },
+			"decreaseFontSize" : { "visible": false && !( $.browser.msie ), "tags": ['small'], "tooltip": "Decrease font size" },
 
-			separator09 : { separator : true },
+			separator09 : { "separator": true },
 
 			"html" : {
-				visible : false,
-				exec    : function()
+				"visible" : false,
+				"exec"    : function()
 				{
 					if ( this.viewHTML )
 					{
@@ -366,12 +364,12 @@
 
 					this.viewHTML = !( this.viewHTML );
 				},
-				tooltip : "View source code"
+				"tooltip": "View source code"
 			},
 
 			"removeFormat" : {
-				visible : true,
-				exec    : function()
+				"visible": true,
+				"exec"   : function()
 				{
 					if ($.browser.msie)
 					{
@@ -380,7 +378,7 @@
 					this.editorDoc.execCommand('removeFormat', false, []);
 					this.editorDoc.execCommand('unlink', false, []);
 				},
-				tooltip : "Remove formatting"
+				"tooltip": "Remove formatting"
 			}
 		}
 	});

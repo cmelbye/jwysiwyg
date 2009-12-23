@@ -30,7 +30,7 @@
 		this.init(element, options);
 	};
 
-	$.fn.document = function()
+	$['fn']['document'] = function()
 	{
 		var element = this.get(0);
 
@@ -46,7 +46,7 @@
 		return this;
 	};
 
-	$.fn.documentSelection = function()
+	$['fn']['documentSelection'] = function()
 	{
 		var element = this.get(0);
 
@@ -60,7 +60,7 @@
 		}
 	};
 
-	$.fn.wysiwyg = function( options )
+	$['fn']['wysiwyg'] = function( options )
 	{
 		if ( arguments.length > 0 && arguments[0].constructor == String )
 		{

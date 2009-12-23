@@ -11,8 +11,13 @@
  * $Id: $
  */
 
- /*jslint browser: true, forin: true */
- 
+/*jslint browser: true, forin: true */
+// ==ClosureCompiler==
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// @output_file_name jquery.wysiwyg.min.js
+// @code_url http://jwysiwyg.googlecode.com/svn/trunk/jwysiwyg/jquery.wysiwyg.js
+// ==/ClosureCompiler==
+
 (function( $ )
 {
 	var Wysiwyg = function( element, options )

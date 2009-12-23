@@ -545,7 +545,7 @@
 				/**
 				 * Remove the horrible border it has on IE.
 				 */
-				setTimeout(function() { $(self.editorDoc.body).css('border', 'none'); }, 0);
+				window.setTimeout(function() { $(self.editorDoc.body).css('border', 'none'); }, 0);
 			}
 
 			$(this.editorDoc).click(function( event )
@@ -576,7 +576,7 @@
 
 			if ( this.options.css )
 			{
-				setTimeout(function()
+				window.setTimeout(function()
 				{
 					if ( self.options.css.constructor == String )
 					{

@@ -12,6 +12,7 @@
  */
 
 /*jslint browser: true, forin: true */
+
 // ==ClosureCompiler==
 // @compilation_level ADVANCED_OPTIMIZATIONS
 // @output_file_name jquery.wysiwyg.min.js
@@ -20,6 +21,9 @@
 
 (function( $ )
 {
+	/**
+	 * @constructor
+	 */
 	var Wysiwyg = function( element, options )
 	{
 		return (this instanceof Wysiwyg) ? this.init(element, options) : new Wysiwyg(element, options);

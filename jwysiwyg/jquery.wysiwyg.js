@@ -563,6 +563,35 @@
 				}
 			});
 
+			$(this.editorDoc).keydown(function(event)
+			{
+				if (event.ctrlKey && !$.browser.msie)
+				{
+					var handled = true;
+					switch (event.keyCode)
+					{
+					case 66: // Ctrl + B
+						this.execCommand('Bold', false, false);
+						return false;
+					case 73: // Ctrl + I
+						this.execCommand('Italic', false, false);
+						return false;
+					case 85: // Ctrl + U
+						this.execCommand('Underline', false, false);
+						return false;
+					}
+				}
+				if ($.browser.msie && self.options.brIE && event.keyCode == 13)
+				{
+					var rng = self.getRange();
+					rng.pasteHTML('<br />');
+					rng.collapse(false);
+					rng.select();
+					return false;
+				}
+				return true;
+			});
+
 			if ( this.options.autoSave )
 			{
 				/**
@@ -594,19 +623,6 @@
 					}
 				}, 0);
 			}
-
-			$(this.editorDoc).keydown(function( event )
-			{
-				if ( $.browser.msie && self.options.brIE && event.keyCode == 13 )
-				{
-					var rng = self.getRange();
-					rng.pasteHTML('<br />');
-					rng.collapse(false);
-					rng.select();
-					return false;
-				}
-				return true;
-			});
 		},
 
 		designMode : function()

@@ -26,7 +26,7 @@
 	 */
 	var Wysiwyg = function( element, options )
 	{
-		return (this instanceof Wysiwyg) ? this.init(element, options) : new Wysiwyg(element, options);
+		this.init(element, options);
 	};
 
 	$.fn.document = function()
@@ -129,7 +129,7 @@
 		// not break the chain
 		return this.each(function()
 		{
-			Wysiwyg(this, options);
+			new Wysiwyg(this, options);
 		});
 	};
 

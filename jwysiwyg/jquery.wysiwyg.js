@@ -563,34 +563,43 @@
 				}
 			});
 
-			$(this.editorDoc).keydown(function(event)
+			if (!$.browser.msie)
 			{
-				if (event.ctrlKey && !$.browser.msie)
+				$(this.editorDoc).keydown(function(event)
 				{
-					var handled = true;
-					switch (event.keyCode)
+					if (event.ctrlKey)
 					{
-					case 66: // Ctrl + B
-						this.execCommand('Bold', false, false);
-						return false;
-					case 73: // Ctrl + I
-						this.execCommand('Italic', false, false);
-						return false;
-					case 85: // Ctrl + U
-						this.execCommand('Underline', false, false);
+						switch (event.keyCode)
+						{
+						case 66: // Ctrl + B
+							this.execCommand('Bold', false, false);
+							return false;
+						case 73: // Ctrl + I
+							this.execCommand('Italic', false, false);
+							return false;
+						case 85: // Ctrl + U
+							this.execCommand('Underline', false, false);
+							return false;
+						}
+					}
+					return true;
+				});
+			}
+			else if (this.options.brIE)
+			{
+				$(this.editorDoc).keydown(function(event)
+				{
+					if (event.keyCode == 13)
+					{
+						var rng = self.getRange();
+						rng.pasteHTML('<br />');
+						rng.collapse(false);
+						rng.select();
 						return false;
 					}
-				}
-				if ($.browser.msie && self.options.brIE && event.keyCode == 13)
-				{
-					var rng = self.getRange();
-					rng.pasteHTML('<br />');
-					rng.collapse(false);
-					rng.select();
-					return false;
-				}
-				return true;
-			});
+					return true;
+				});
+			}
 
 			if ( this.options.autoSave )
 			{
@@ -598,15 +607,16 @@
 				 * @link http://code.google.com/p/jwysiwyg/issues/detail?id=11
 				 */
 				$(this.editorDoc).keydown(function() { self.saveContent(); })
-								 .keyup(function() { self.saveContent(); })
-								 .mousedown(function() { self.saveContent(); });
+					.keyup(function() { self.saveContent(); })
+					.mousedown(function() { self.saveContent(); })
+					;
 			}
 
 			if ( this.options.css )
 			{
 				window.setTimeout(function()
 				{
-					if ( self.options.css.constructor == String )
+					if (self.options.css.constructor == String)
 					{
 						/**
 						 * $(self.editorDoc)
@@ -627,7 +637,7 @@
 
 		designMode : function()
 		{
-			if ( !( this.editorDoc_designMode ) )
+			if (!(this.editorDoc_designMode))
 			{
 				try {
 					this.editorDoc.designMode = 'on';

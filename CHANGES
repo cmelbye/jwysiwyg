@@ -1,3 +1,9 @@
+== Version 0.7 ==
+
+* Ctrl+B, Ctrl+I and Ctrl+U keystrokes in non-IE browsers now works like IE ones - akzhan.abdulin
+* insertHtml in non-focused editor works now - akzhan.abdulin
+! Code reviewed.
+
 == Version 0.6 ==
 
 * New $().wysiwyg('insertHtml', string) method - akzhan.abdulin
@@ -10,6 +16,6 @@
 * More correct styling of editor - gamingforever
 * Correct behaviour on IE using https protocol - jf.stgermain
 * Incorrect initialization of editor when content contains "$" characters fixed - JackPDouglas
-* Improved CSS deradability - deansofer
+* Improved CSS degradability - deansofer
 * Improved ARIA accessability - akzhan.abdulin
-* Requires jQuery 1.3 or higher! Tested under jQuery 1.4 too.
+! Requires jQuery 1.3 or higher! Tested under jQuery 1.4 too.

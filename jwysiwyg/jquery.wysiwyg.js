@@ -732,6 +732,7 @@
 				{
 					self.saveContent();
 				}
+				self.focus();
 			}).appendTo( this.panel );
 		},
 

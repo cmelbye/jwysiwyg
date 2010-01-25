@@ -2,6 +2,7 @@
 
 * Ctrl+B, Ctrl+I and Ctrl+U keystrokes in non-IE browsers now works like IE ones - akzhan.abdulin
 * insertHtml in non-focused editor works now - akzhan.abdulin
+* Appearance of toolbar buttons fixed under IE7/8 - ibnteo, mail2lx
 ! Code reviewed.
 
 == Version 0.6 ==

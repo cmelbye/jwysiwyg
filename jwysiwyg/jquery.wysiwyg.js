@@ -732,7 +732,7 @@
 				{
 					self.saveContent();
 				}
-				self.focus();
+				this.blur();
 			}).appendTo( this.panel );
 		},
 

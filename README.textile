@@ -1,7 +1,7 @@
 h1. jWYSIWYG
 
 Copyright (c) 2009 Juan M Martínez
-Dual licensed under the "MIT": http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt and "GPL2":http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt licenses.
+Dual licensed under the "MIT":http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt and "GPL2":http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt licenses.
 
 h2. Requirements
 

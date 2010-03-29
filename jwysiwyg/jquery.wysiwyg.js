@@ -103,7 +103,6 @@
 			autoSave: true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=11
 			rmUnwantedBr: true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			brIE: true,
-
 			controls: {},
 			messages: {}
 		}, options);
@@ -243,7 +242,7 @@
 		},
 
 		MSGS_EN: {
-			"nonSelection" : 'select the text you wish to link'
+			nonSelection: 'select the text you wish to link'
 		},
 
 		TOOLBAR: {

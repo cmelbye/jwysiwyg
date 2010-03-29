@@ -234,7 +234,7 @@
 
 		removeFormat: function()
 		{
-	        	var self = $.data(this, 'wysiwyg');	
+			var self = $.data(this, 'wysiwyg');	
 			self.removeFormat();
 		},
 

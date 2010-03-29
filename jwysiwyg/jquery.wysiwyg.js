@@ -13,12 +13,6 @@
 
 /*jslint browser: true, forin: true */
 
-// ==ClosureCompiler==
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @output_file_name jquery.wysiwyg.min.js
-// @code_url http://jwysiwyg.googlecode.com/svn/trunk/jwysiwyg/jquery.wysiwyg.js
-// ==/ClosureCompiler==
-
 (function( $ )
 {
 	/**
@@ -30,7 +24,7 @@
 		this.init(element, options);
 	};
 
-	$['fn']['document'] = function()
+	$.fn.document = function()
 	{
 		var element = this.get(0);
 
@@ -46,7 +40,7 @@
 		return this;
 	};
 
-	$['fn']['documentSelection'] = function()
+	$.fn.documentSelection = function()
 	{
 		var element = this.get(0);
 
@@ -60,7 +54,7 @@
 		}
 	};
 
-	$['fn']['wysiwyg'] = function( options )
+	$.fn.wysiwyg = function( options )
 	{
 		if ( arguments.length > 0 && arguments[0].constructor == String )
 		{
@@ -103,31 +97,29 @@
 		}
 
 		options = $.extend({
-			"html": '<'+'?xml version="1.0" encoding="UTF-8"?'+'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
-			"css": {},
+			html: '<'+'?xml version="1.0" encoding="UTF-8"?'+'><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
+			css: {},
+			debug: false,
+			autoSave: true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=11
+			rmUnwantedBr: true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=15
+			brIE: true,
 
-			"debug": false,
-
-			"autoSave" : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=11
-			"rmUnwantedBr" : true,  // http://code.google.com/p/jwysiwyg/issues/detail?id=15
-			"brIE" : true,
-
-			"controls" : {},
-			"messages" : {}
+			controls: {},
+			messages: {}
 		}, options);
 
-		options['messages'] = $.extend(true, options['messages'], Wysiwyg['MSGS_EN']);
-		options['controls'] = $.extend(true, options['controls'], Wysiwyg['TOOLBAR']);
+		options.messages = $.extend(true, options.messages, Wysiwyg.MSGS_EN);
+		options.controls = $.extend(true, options.controls, Wysiwyg.TOOLBAR);
 
 		for (var control in controls)
 		{
-			if (control in options['controls'])
+			if (control in options.controls)
 			{
-				$.extend(options['controls'][control], controls[control]);
+				$.extend(options.controls[control], controls[control]);
 			}
 			else
 			{
-				options['controls'][control] = controls[control];
+				options.controls[control] = controls[control];
 			}
 		}
 
@@ -250,11 +242,11 @@
 			self.destroy();
 		},
 
-		"MSGS_EN" : {
+		MSGS_EN: {
 			"nonSelection" : 'select the text you wish to link'
 		},
 
-		"TOOLBAR" : {
+		TOOLBAR: {
 			"bold"          : { "visible" : true, "tags" : ['b', 'strong'], "css" : { "fontWeight" : 'bold' }, "tooltip" : "Bold" },
 			"italic"        : { "visible" : true, "tags" : ['i', 'em'], "css" : { "fontStyle": 'italic' }, "tooltip" : "Italic" },
 			"strikeThrough" : { "visible" : true, "tags" : ['s', 'strike'], "css" : { "textDecoration" : 'line-through' }, "tooltip" : "Strike-through" },

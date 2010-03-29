@@ -71,6 +71,10 @@
 			{
 				params[i - 1] = arguments[i];
 			}
+			if (action == 'enabled')
+			{
+				return this.data('wysiwyg') != null;
+			}
 			if (action in Wysiwyg)
 			{
 				return this.each(function()
@@ -135,7 +139,7 @@
 	};
 
 	$.extend(Wysiwyg, {
-		"insertImage" : function( szURL, attributes )
+		insertImage: function( szURL, attributes )
 		{
 			var self = $.data(this, 'wysiwyg');
 
@@ -167,7 +171,7 @@
 			}
 		},
 
-		"createLink" : function( szURL )
+		createLink: function( szURL )
 		{
 			var self = $.data(this, 'wysiwyg');
 
@@ -191,7 +195,7 @@
 			}
 		},
 
-		"insertHtml" : function( szHTML )
+		insertHtml: function( szHTML )
 		{
 			var self = $.data(this, 'wysiwyg');
 
@@ -214,18 +218,36 @@
 			}
 		},
 
-		"setContent" : function( newContent )
+		setContent: function( newContent )
 		{
 			var self = $.data(this, 'wysiwyg');
-				self.setContent( newContent );
-				self.saveContent();
+			self.setContent( newContent );
+			self.saveContent();
 		},
 
-		"clear" : function()
+		clear: function()
 		{
 			var self = $.data(this, 'wysiwyg');
-				self.setContent('');
-				self.saveContent();
+			self.setContent('');
+			self.saveContent();
+		},
+
+		removeFormat: function()
+		{
+	        	var self = $.data(this, 'wysiwyg');	
+			self.removeFormat();
+		},
+
+		save : function()
+		{
+			var self = $.data(this, 'wysiwyg');		
+			self.saveContent();
+		},
+
+		destroy : function()
+		{
+			var self = $.data(this, 'wysiwyg');	
+			self.destroy();
 		},
 
 		"MSGS_EN" : {
@@ -391,6 +413,18 @@
 		element  : null,
 		editor   : null,
 
+		removeFormat : function()
+		{
+			if ($.browser.msie) this.focus();
+			this.editorDoc.execCommand('removeFormat', false, []);
+		 	this.editorDoc.execCommand('unlink', false, []);
+		},
+		destroy : function()
+		{
+			$(this.element).remove();
+			$.removeData(this.original, 'wysiwyg');
+			$(this.original).show();
+		},
 		focus : function()
 		{
 			$(this.editorDoc.body).focus();

@@ -1,3 +1,7 @@
+== master (not branched yet) ==
+
++ enabled, destroy, removeFormat, save actions added to $('#elt).wysiwyg(action) - fomojola
+
 == Version 0.7 ==
 
 * Ctrl+B, Ctrl+I and Ctrl+U keystrokes in non-IE browsers now works like IE ones - akzhan.abdulin

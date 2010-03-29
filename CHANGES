@@ -1,6 +1,6 @@
 == master (not branched yet) ==
 
-+ enabled, destroy, removeFormat, save actions added to $('#elt).wysiwyg(action) - fomojola
++ enabled, destroy, removeFormat, save actions added to $('#elt').wysiwyg(action) - fomojola
 
 == Version 0.7 ==
 

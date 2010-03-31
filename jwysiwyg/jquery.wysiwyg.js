@@ -339,7 +339,20 @@
 				"visible": true,
 				"exec"   : function()
 				{
-					this.editorDoc.execCommand('insertHtml', false, "<table border='1'><tbody><tr><td>Jeje</td><td>Otra</td></tr></tbody></table>");
+					var rows = prompt('Rows', '3');
+					var cells = prompt('Cells', '3');
+					if(!isNaN(rows) && !isNaN(cells)){
+						var table="<table border='1' style='width: 100%;'>";
+						for(var i=0; i<rows; i++){
+							table=table+"<tr>";
+							for(var j=0; j<cells; j++){
+								table=table+"<td></td>";	
+							}
+							table=table+"</tr>";
+						}
+						table=table + "</table>";
+						this.editorDoc.execCommand('insertHtml', false, table);	
+					}					
 				},
 				"tags": ['table'],
 				"tooltip": "Insert table"

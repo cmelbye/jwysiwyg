@@ -351,7 +351,24 @@
 							table=table+"</tr>";
 						}
 						table=table + "</table>";
-						this.editorDoc.execCommand('insertHtml', false, table);	
+						//this.editorDoc.execCommand('insertHtml', false, table);
+						if ( this.constructor == Wysiwyg && table && table.length > 0 )
+						{
+							this.focus();
+							if ($.browser.msie)
+							{
+								this.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
+								var img = this.getElementByAttributeValue('img', 'src', '#jwysiwyg#');
+								if (img)
+								{
+									$(img).replaceWith(table);
+								}
+							}
+							else
+							{
+								this.editorDoc.execCommand('insertHTML', false, table);
+							}
+						}
 					}					
 				},
 				"tags": ['table'],

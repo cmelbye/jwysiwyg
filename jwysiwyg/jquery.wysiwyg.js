@@ -133,7 +133,6 @@
 		insertImage: function( szURL, attributes )
 		{
 			var self = $.data(this, 'wysiwyg');
-
 			if ( self.constructor == Wysiwyg && szURL && szURL.length > 0 )
 			{
 				if ($.browser.msie)
@@ -335,6 +334,15 @@
 				},
 				"tags": ['img'],
 				"tooltip": "Insert image"
+			},
+			"insertTable" : {
+				"visible": true,
+				"exec"   : function()
+				{
+					this.editorDoc.execCommand('insertHtml', false, "<table border='1'><tbody><tr><td>Jeje</td><td>Otra</td></tr></tbody></table>");
+				},
+				"tags": ['table'],
+				"tooltip": "Insert table"
 			},
 
 			separator06 : { "separator": true },

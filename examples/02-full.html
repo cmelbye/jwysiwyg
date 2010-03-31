@@ -63,9 +63,13 @@
       
       cut   : { visible : true },
       copy  : { visible : true },
-      paste : { visible : true }
+      paste : { visible : true },
+
+      exam_html: { exec: function() { this.insertHtml('<abbr title="exam">Jam</abbr>') }, visible: true  }
     }
   });
+
+  $('#wysiwyg').wysiwyg('insertHtml', 'sample code');
 })(jQuery);
     </script>
   </body>

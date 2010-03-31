@@ -188,24 +188,7 @@
 		insertHtml: function( szHTML )
 		{
 			var self = $.data(this, 'wysiwyg');
-
-			if ( self.constructor == Wysiwyg && szHTML && szHTML.length > 0 )
-			{
-				self.focus();
-				if ($.browser.msie)
-				{
-					self.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
-					var img = self.getElementByAttributeValue('img', 'src', '#jwysiwyg#');
-					if (img)
-					{
-						$(img).replaceWith(szHTML);
-					}
-				}
-				else
-				{
-					self.editorDoc.execCommand('insertHTML', false, szHTML);
-				}
-			}
+                        self.insertHtml(szHTML);
 		},
 
 		setContent: function( newContent )
@@ -341,34 +324,20 @@
 				{
 					var rows = prompt('Rows', '3');
 					var cells = prompt('Cells', '3');
-					if(!isNaN(rows) && !isNaN(cells)){
-						var table="<table border='1' style='width: 100%;'>";
-						for(var i=0; i<rows; i++){
-							table=table+"<tr>";
-							for(var j=0; j<cells; j++){
-								table=table+"<td></td>";	
-							}
-							table=table+"</tr>";
-						}
-						table=table + "</table>";
-						//this.editorDoc.execCommand('insertHtml', false, table);
-						if ( this.constructor == Wysiwyg && table && table.length > 0 )
+					if(!isNaN(rows) && !isNaN(cells))
+					{
+						var table = ['<table border="1" style="width: 100%;"><tbody>'];
+						for(var i = 0; i < rows; i++)
 						{
-							this.focus();
-							if ($.browser.msie)
+							table.push('<tr>');
+							for(var j = 0; j < cells; j++)
 							{
-								this.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
-								var img = this.getElementByAttributeValue('img', 'src', '#jwysiwyg#');
-								if (img)
-								{
-									$(img).replaceWith(table);
-								}
+								table.push('<td>Lorem ipsum</td>');	
 							}
-							else
-							{
-								this.editorDoc.execCommand('insertHTML', false, table);
-							}
+							table.push('</tr>');
 						}
+						table.push('</tbody></table>');
+						this.insertHtml(table.join(''));
 					}					
 				},
 				"tags": ['table'],
@@ -735,6 +704,26 @@
 		{
 			$( $(this.editor).document() ).find('body').html(newContent);
 		},
+                insertHtml: function( szHTML )
+                {
+                        if (szHTML && szHTML.length > 0 )
+                        {
+                                if ($.browser.msie)
+                                {
+					this.focus();
+                                        this.editorDoc.execCommand('insertImage', false, '#jwysiwyg#');
+                                        var img = this.getElementByAttributeValue('img', 'src', '#jwysiwyg#');
+                                        if (img)
+                                        {
+                                                $(img).replaceWith(szHTML);
+                                        }
+                                }
+                                else
+                                {
+                                        this.editorDoc.execCommand('insertHTML', false, szHTML);
+                                }
+                        }
+                },
 
 		saveContent : function()
 		{

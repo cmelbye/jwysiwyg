@@ -436,10 +436,10 @@
                                 "exec": function ()
                                 {
                                 	
-                                        var self = this;
                                         if ($.modal)
                                         {
-                                                $.modal('<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Rows <input type="text" name="rowCount" value="3" /></label><label>Cells <input type="text" name="colCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>', {
+                                                var self = this;
+                                                $.modal('<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label>Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>', {
                                                         onShow: function(dialog)
                                                         {
                                                                 $('input:submit', dialog.data).click(function(e)
@@ -456,16 +456,16 @@
                                                                         $.modal.close();
                                                                 });
                                                         },
-                                                        maxWidth: 400,
+                                                        maxWidth: 440,
                                                         maxHeight: 220,
                                                         overlayClose: true
                                                 });
                                         }
                                         else
                                         {
-                                                var rowCount = prompt('Rows', '3');
-                       	                        var colCount = prompt('Cells', '3');  
-                                        	this.insertTable(colCount, rowCount, 'Lorem ipsum');
+                                                var colCount = prompt('Count of columns', '3');
+                                                var rowCount = prompt('Count of rows', '3');
+                                                this.insertTable(colCount, rowCount, 'Lorem ipsum');
                                         }
                                 },
                                 "tags": ['table'],

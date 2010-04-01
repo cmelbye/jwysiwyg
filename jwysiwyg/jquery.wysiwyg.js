@@ -436,33 +436,37 @@
                                 "exec": function ()
                                 {
                                 	
-                                		var self = this;
-										if($.fn.modal)
-										{
-											$.modal("<div id='jwysiwyg_form_table'><form onsubmit='return false'><fieldset><legend>Insert table</legend><label for='jwysiwyg_form_table_input_rows'>Rows</label> <input type='text' id='jwysiwyg_form_table_input_rows' value='3' /><br /><label for='jwysiwyg_form_table_input_cells'>Cells</label><input type='text' id='jwysiwyg_form_table_input_cells' value='3' /><br /><input type='hidden' id='jwysiwyg_form_table_input_hidden' value='' /><label for='button'>&nbsp;</label><input type='submit' class='button' id='button' onclick='$(\"#jwysiwyg_form_table_input_hidden\").val(\"1\");$.modal.close();' value='Insert' /><label for='cancel'>&nbsp;</label><input type='button' value='Cancel' id='cancel' onclick='$.modal.close();' /></fieldset></form></div>",
-												{	
-													onClose:function(){
-														if($("#jwysiwyg_form_table_input_hidden").val()=="1"){
-															var rows = $("#jwysiwyg_form_table_input_rows").val();
-				                                        	var cells = $("#jwysiwyg_form_table_input_cells").val();
-				           									self.insertTable(cells, rows, 'Lorem ipsum');
-															$.modal.close();
-														}else{
-															$.modal.close();	
-														}
-													},
-													overlayClose:true,
-													maxWidth:440,
-													maxHeight:200
-												}
-											);
-										}
-										else
-										{
-										  	var rows = prompt('Rows', '3');
-                                        	var cells = prompt('Cells', '3');  
-                                        	this.insertTable(cells, rows, 'Lorem ipsum');
-										}
+                                        var self = this;
+                                        if ($.modal)
+                                        {
+                                                $.modal('<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Rows <input type="text" name="rowCount" value="3" /></label><label>Cells <input type="text" name="colCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>', {
+                                                        onShow: function(dialog)
+                                                        {
+                                                                $('input:submit', dialog.data).click(function(e)
+                                                                {
+                                                                        e.preventDefault();
+                                                                        var rowCount = $('input[name="rowCount"]', dialog.data).val();
+                                                                        var colCount = $('input[name="colCount"]', dialog.data).val();
+                                                                        self.insertTable(colCount, rowCount, 'Lorem ipsum');
+                                                                        $.modal.close();
+                                                                });
+                                                                $('input:reset', dialog.data).click(function(e)
+                                                                {
+                                                                        e.preventDefault();
+                                                                        $.modal.close();
+                                                                });
+                                                        },
+                                                        maxWidth: 400,
+                                                        maxHeight: 220,
+                                                        overlayClose: true
+                                                });
+                                        }
+                                        else
+                                        {
+                                                var rowCount = prompt('Rows', '3');
+                       	                        var colCount = prompt('Cells', '3');  
+                                        	this.insertTable(colCount, rowCount, 'Lorem ipsum');
+                                        }
                                 },
                                 "tags": ['table'],
                                 "tooltip": "Insert table"

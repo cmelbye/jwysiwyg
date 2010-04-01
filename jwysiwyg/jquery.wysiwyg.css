@@ -56,3 +56,57 @@ div.wysiwyg ul.panel li a.removeFormat { background-position: -80px -63px; }
 div.wysiwyg ul.panel li a.empty { background-position: -64px -80px; }
 
 div.wysiwyg iframe { border: 0;  clear: left; margin: 4px 0 0 1px; }
+
+#jwysiwyg_form_table form {
+	background:#fff;
+	padding:1em;
+	border:1px solid #eee;
+}
+#jwysiwyg_form_table fieldset div {
+	margin:0.3em 0;
+	clear:both;
+	margin-bottom:5px;
+}
+#jwysiwyg_form_table form {
+	margin:2px;
+	width:25em;
+}
+#jwysiwyg_form_table label {
+	float:left;
+	width:10em;
+	text-align:right;
+	margin-right:1em;
+}
+#jwysiwyg_form_table legend {
+	color:#0b77b7;
+	font-size:1.2em;
+}
+#jwysiwyg_form_table legend span {
+	width:10em;
+	text-align:right;
+}
+#jwysiwyg_form_table input {
+	padding:0.15em;
+	width:10em;
+	border:1px solid #ddd;
+	background:#fafafa;
+	font:bold 0.95em arial, sans-serif;
+	margin-bottom:5px;
+	-moz-border-radius:0.4em;
+	-khtml-border-radius:0.4em;
+}
+#jwysiwyg_form_table input:hover, input:focus {
+	border-color:#c5c5c5;
+	background:#f6f6f6;
+} 
+#jwysiwyg_form_table .button{
+	margin-top:8px;
+}
+#jwysiwyg_form_table fieldset {
+	border:1px solid #ddd;
+	padding:0 0.5em 0.5em;
+}
+
+#jwysiwyg_form_table input.default {
+	color:#bbb;
+}

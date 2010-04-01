@@ -1,6 +1,7 @@
 == master (not branched yet) ==
 
 + enabled, destroy, removeFormat, save actions added to $('#elt').wysiwyg(action) - fomojola
++ insertTable action/button added - academo
 
 == Version 0.7 ==
 

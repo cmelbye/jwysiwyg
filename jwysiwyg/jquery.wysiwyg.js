@@ -84,9 +84,7 @@
                         }
                 }
 
-                var controls =
-                {
-                };
+                var controls = { };
 
                 /**
                  * If the user set custom controls, we catch it, and merge with the
@@ -197,6 +195,11 @@
                 {
                         var self = $.data(this, 'wysiwyg');
                         self.insertHtml(szHTML);
+                },
+
+                insertTable: function(colCount, rowCount, filler)
+                {
+                        $.data(this, 'wysiwyg').insertTable(colCount, rowCount, filler);
                 },
 
                 setContent: function (newContent)
@@ -428,27 +431,13 @@
                                 "tags": ['img'],
                                 "tooltip": "Insert image"
                         },
-                        "insertTable": {
+                        insertTable: {
                                 "visible": true,
                                 "exec": function ()
                                 {
                                         var rows = prompt('Rows', '3');
                                         var cells = prompt('Cells', '3');
-                                        if (!isNaN(rows) && !isNaN(cells))
-                                        {
-                                                var table = ['<table border="1" style="width: 100%;"><tbody>'];
-                                                for (var i = 0; i < rows; i++)
-                                                {
-                                                        table.push('<tr>');
-                                                        for (var j = 0; j < cells; j++)
-                                                        {
-                                                                table.push('<td>Lorem ipsum</td>');
-                                                        }
-                                                        table.push('</tr>');
-                                                }
-                                                table.push('</tbody></table>');
-                                                this.insertHtml(table.join(''));
-                                        }
+                                        this.insertTable(cells, rows, 'Lorem ipsum');
                                 },
                                 "tags": ['table'],
                                 "tooltip": "Insert table"
@@ -921,7 +910,32 @@
                                 }
                         }
                 },
-
+                insertTable: function(colCount, rowCount, filler)
+                {
+                        if (isNaN(rowCount) || isNaN(colCount))
+                        {
+                                return;
+                        }
+                        colCount = parseInt(colCount);
+                        rowCount = parseInt(rowCount);
+                        if (filler == null)
+                        {
+                                filler = '&nbsp;';
+                        }
+                        filler = '<td>' + filler + '</td>';
+                        var html = ['<table border="1" style="width: 100%;"><tbody>'];
+                        for (var i = rowCount; i > 0; i--)
+                        {
+                                html.push('<tr>');
+                                for (var j = colCount; j > 0; j--)
+                                {
+                                        html.push(filler);
+                                }
+                                html.push('</tr>');
+                        }
+                        html.push('</tbody></table>');
+                        this.insertHtml(html.join(''));
+                },
                 saveContent: function ()
                 {
                         if (this.original)

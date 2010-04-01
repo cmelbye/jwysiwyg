@@ -121,6 +121,10 @@
 
         $.fn.wysiwyg.defaults = {
                 html: '<' + '?xml version="1.0" encoding="UTF-8"?' + '><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
+                formHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label>Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
+                formWidth: 440,
+                formHeight: 220,
+                tableFiller: 'Lorem ipsum',
                 css: { },
                 debug: false,
                 autoSave: true,
@@ -436,7 +440,7 @@
                                         if ($.modal)
                                         {
                                                 var self = this;
-                                                $.modal('<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label>Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>', {
+                                                $.modal($.fn.wysiwyg.defaults.formHtml, {
                                                         onShow: function(dialog)
                                                         {
                                                                 $('input:submit', dialog.data).click(function(e)
@@ -444,7 +448,7 @@
                                                                         e.preventDefault();
                                                                         var rowCount = $('input[name="rowCount"]', dialog.data).val();
                                                                         var colCount = $('input[name="colCount"]', dialog.data).val();
-                                                                        self.insertTable(colCount, rowCount, 'Lorem ipsum');
+                                                                        self.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
                                                                         $.modal.close();
                                                                 });
                                                                 $('input:reset', dialog.data).click(function(e)
@@ -453,8 +457,8 @@
                                                                         $.modal.close();
                                                                 });
                                                         },
-                                                        maxWidth: 440,
-                                                        maxHeight: 220,
+                                                        maxWidth: $.fn.wysiwyg.defaults.formWidth,
+                                                        maxHeight: $.fn.wysiwyg.defaults.formHeight,
                                                         overlayClose: true
                                                 });
                                         }
@@ -462,7 +466,7 @@
                                         {
                                                 var colCount = prompt('Count of columns', '3');
                                                 var rowCount = prompt('Count of rows', '3');
-                                                this.insertTable(colCount, rowCount, 'Lorem ipsum');
+                                                this.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
                                         }
                                 },
                                 "tags": ['table'],

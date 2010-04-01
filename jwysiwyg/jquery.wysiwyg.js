@@ -97,7 +97,6 @@
                 }
 
                 options = $.extend($.fn.wysiwyg.defaults, options);
-                options.messages = $.extend(true, options.messages, Wysiwyg.MSGS_EN);
                 options.controls = $.extend(true, options.controls, Wysiwyg.TOOLBAR);
 
                 for (var control in controls)
@@ -132,8 +131,11 @@
                 rmUnwantedBr: true,
                 // http://code.google.com/p/jwysiwyg/issues/detail?id=15
                 brIE: true,
-                controls: {  },
-                messages: { }
+                controls: { },
+                messages: 
+                {
+                        nonSelection: 'select the text you wish to link'
+                }
         };
 
         $.extend(Wysiwyg, {
@@ -233,10 +235,6 @@
                 {
                         var self = $.data(this, 'wysiwyg');
                         self.destroy();
-                },
-
-                MSGS_EN: {
-                        nonSelection: 'select the text you wish to link'
                 },
 
                 TOOLBAR: {

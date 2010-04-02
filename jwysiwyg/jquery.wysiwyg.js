@@ -97,8 +97,7 @@
                 }
 
                 options = $.extend($.fn.wysiwyg.defaults, options);
-                options.controls = $.extend(true, options.controls, Wysiwyg.TOOLBAR);
-
+                options.controls = $.extend(true, options.controls, $.fn.wysiwyg.controls);
                 for (var control in controls)
                 {
                         if (control in options.controls)
@@ -131,10 +130,319 @@
                 rmUnwantedBr: true,
                 // http://code.google.com/p/jwysiwyg/issues/detail?id=15
                 brIE: true,
-                controls: { },
                 messages: 
                 {
                         nonSelection: 'select the text you wish to link'
+                },
+                controls: { }
+        };
+        $.fn.wysiwyg.controls = {
+                bold: {
+                        visible: true,
+                        tags: ['b', 'strong'],
+                        css: {
+                                fontWeight: 'bold'
+                        },
+                        tooltip: 'Bold'
+                },
+                italic: {
+                        visible: true,
+                        tags: ['i', 'em'],
+                        css: {
+                                fontStyle: 'italic'
+                        },
+                        tooltip: 'Italic'
+                        },
+                strikeThrough: {
+                        visible: true,
+                        tags: ['s', 'strike'],
+                        css: {
+                                textDecoration: 'line-through'
+                        },
+                        tooltip: 'Strike-through'
+                },
+                underline: {
+                        visible: true,
+                        tags: ['u'],
+                        css: {
+                                textDecoration: 'underline'
+                        },
+                        tooltip: 'Underline'
+                },
+                separator00: {
+                        visible: true,
+                        separator: true
+                },
+                justifyLeft: {
+                        visible: true,
+                        css: {
+                                textAlign: 'left'
+                        },
+                        tooltip: 'Justify Left'
+                },
+                justifyCenter: {
+                        visible: true,
+                        tags: ['center'],
+                        css: {
+                                textAlign: 'center'
+                        },
+                        tooltip: 'Justify Center'
+                },
+                justifyRight: {
+                        visible: true,
+                        css: {
+                                textAlign: 'right'
+                        },
+                        tooltip: 'Justify Right'
+                },
+                justifyFull: {
+                        visible: true,
+                        css: {
+                                textAlign: 'justify'
+                        },
+                        tooltip: 'Justify Full'
+                },
+                separator01: {
+                        visible: true,
+                        separator: true
+                },
+                indent: {
+                        visible: true,
+                        tooltip: 'Indent'
+                },
+                outdent: {
+                        visible: true,
+                        tooltip: 'Outdent'
+                },
+                separator02: {
+                        visible: false,
+                        separator: true
+                },
+                subscript: {
+                        visible: true,
+                        tags: ['sub'],
+                        tooltip: 'Subscript'
+                        },
+                superscript: {
+                        visible: true,
+                        tags: ['sup'],
+                        tooltip: 'Superscript'
+                        },
+                separator03: {
+                        visible: true,
+                        separator: true
+                },
+                undo: {
+                        visible: true,
+                        tooltip: 'Undo'
+                },
+                redo: {
+                        visible: true,
+                        tooltip: 'Redo'
+                },
+                separator04: {
+                        visible: true,
+                        separator: true
+                },
+                insertOrderedList: {
+                        visible: true,
+                        tags: ['ol'],
+                        tooltip: 'Insert Ordered List'
+                },
+                insertUnorderedList: {
+                        visible: true,
+                        tags: ['ul'],
+                        tooltip: 'Insert Unordered List'
+                },
+                insertHorizontalRule: {
+                        visible: true,
+                        tags: ['hr'],
+                        tooltip: 'Insert Horizontal Rule'
+                },
+                separator05: {
+                        separator: true
+                },
+                createLink: {
+                        visible: true,
+                        exec: function ()
+                        {
+                                var selection = $(this.editor).documentSelection();
+
+                                if (selection.length > 0)
+                                {
+                                        if ($.browser.msie)
+                                        {
+                                                this.focus();
+                                                this.editorDoc.execCommand('createLink', true, null);
+                                        }
+                                        else
+                                        {
+                                                var szURL = prompt('URL', 'http://');
+                                                if (szURL && szURL.length > 0)
+                                                {
+                                                        this.editorDoc.execCommand('unlink', false, []);
+                                                        this.editorDoc.execCommand('createLink', false, szURL);
+                                                }
+                                        }
+                                }
+                                else if (this.options.messages.nonSelection)
+                                {
+                                        alert(this.options.messages.nonSelection);
+                                }
+                        },
+                        tags: ['a'],
+                        tooltip: 'Create link'
+                },
+                insertImage: {
+                        visible: true,
+                        exec: function ()
+                        {
+                                if ($.browser.msie)
+                                {
+                                        this.focus();
+                                        this.editorDoc.execCommand('insertImage', true, null);
+                                }
+                                else
+                                {
+                                        var szURL = prompt('URL', 'http://');
+                                        if (szURL && szURL.length > 0)
+                                        {
+                                                this.editorDoc.execCommand('insertImage', false, szURL);
+                                        }
+                                }
+                        },
+                        tags: ['img'],
+                        tooltip: 'Insert image'
+                },
+                insertTable: {
+                        visible: true,
+                        exec: function ()
+                        {
+                                if ($.modal)
+                                {
+                                        var self = this;
+                                        $.modal($.fn.wysiwyg.defaults.formHtml, {
+                                                onShow: function(dialog)
+                                                {
+                                                        $('input:submit', dialog.data).click(function(e)
+                                                        {
+                                                                e.preventDefault();
+                                                                var rowCount = $('input[name="rowCount"]', dialog.data).val();
+                                                                var colCount = $('input[name="colCount"]', dialog.data).val();
+                                                                self.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
+                                                                $.modal.close();
+                                                        });
+                                                        $('input:reset', dialog.data).click(function(e)
+                                                        {
+                                                                e.preventDefault();
+                                                                $.modal.close();
+                                                        });
+                                                },
+                                                maxWidth: $.fn.wysiwyg.defaults.formWidth,
+                                                maxHeight: $.fn.wysiwyg.defaults.formHeight,
+                                                overlayClose: true
+                                        });
+                                }
+                                else
+                                {
+                                        var colCount = prompt('Count of columns', '3');
+                                        var rowCount = prompt('Count of rows', '3');
+                                        this.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
+                                }
+                        },
+                        tags: ['table'],
+                        tooltip: 'Insert table'
+                },
+                separator06: {
+                        separator: true
+                },
+                h1: {
+                        visible: true,
+                        className: 'h1',
+                        command: $.browser.msie ? 'FormatBlock' : 'heading',
+                        arguments: [$.browser.msie ? '<h1>' : 'h1'],
+                        tags: ['h1'],
+                        tooltip: 'Header 1'
+                },
+                h2: {
+                        visible: true,
+                        className: 'h2',
+                        command: $.browser.msie ? 'FormatBlock' : 'heading',
+                        arguments: [$.browser.msie ? '<h2>' : 'h2'],
+                        tags: ['h2'],
+                        tooltip: 'Header 2'
+                },
+                h3: {
+                        visible: true,
+                        className: 'h3',
+                        command: $.browser.msie ? 'FormatBlock' : 'heading',
+                        arguments: [$.browser.msie ? '<h3>' : 'h3'],
+                        tags: ['h3'],
+                        tooltip: 'Header 3'
+                },
+                separator07: {
+                        visible: false,
+                        separator: true
+                },
+                cut: {
+                        visible: false,
+                        tooltip: 'Cut'
+                        },
+                copy: {
+                        visible: false,
+                        tooltip: 'Copy'
+                },
+                paste: {
+                        visible: false,
+                        tooltip: 'Paste'
+                },
+                separator08: {
+                        separator: false && !($.browser.msie)
+                },
+                increaseFontSize: {
+                        visible: false && !($.browser.msie),
+                        tags: ['big'],
+                        tooltip: 'Increase font size'
+                },
+                decreaseFontSize: {
+                        visible: false && !($.browser.msie),
+                        tags: ['small'],
+                        tooltip: 'Decrease font size'
+                },
+                separator09: {
+                        separator: true
+                },
+                html: {
+                        visible: false,
+                        exec: function ()
+                        {
+                                if (this.viewHTML)
+                                {
+                                        this.setContent($(this.original).val());
+                                        $(this.original).hide();
+                                }
+                                else
+                                {
+                                        this.saveContent();
+                                        $(this.original).show();
+                                }
+
+                                this.viewHTML = !(this.viewHTML);
+                         },
+                         tooltip: 'View source code'
+                },
+                removeFormat: {
+                         visible: true,
+                         exec: function ()
+                         {
+                                if ($.browser.msie)
+                                {
+                                        this.focus();
+                                }
+                                this.editorDoc.execCommand('removeFormat', false, []);
+                                this.editorDoc.execCommand('unlink', false, []);
+                         },
+                         tooltip: 'Remove formatting'
                 }
         };
 
@@ -235,366 +543,6 @@
                 {
                         var self = $.data(this, 'wysiwyg');
                         self.destroy();
-                },
-
-                TOOLBAR: {
-                        "bold": {
-                                "visible": true,
-                                "tags": ['b', 'strong'],
-                                "css": {
-                                        "fontWeight": 'bold'
-                                },
-                                "tooltip": "Bold"
-                        },
-                        "italic": {
-                                "visible": true,
-                                "tags": ['i', 'em'],
-                                "css": {
-                                        "fontStyle": 'italic'
-                                },
-                                "tooltip": "Italic"
-                        },
-                        "strikeThrough": {
-                                "visible": true,
-                                "tags": ['s', 'strike'],
-                                "css": {
-                                        "textDecoration": 'line-through'
-                                },
-                                "tooltip": "Strike-through"
-                        },
-                        "underline": {
-                                "visible": true,
-                                "tags": ['u'],
-                                "css": {
-                                        "textDecoration": 'underline'
-                                },
-                                "tooltip": "Underline"
-                        },
-
-                        separator00: {
-                                "visible": true,
-                                "separator": true
-                        },
-
-                        "justifyLeft": {
-                                "visible": true,
-                                "css": {
-                                        "textAlign": 'left'
-                                },
-                                "tooltip": "Justify Left"
-                        },
-                        "justifyCenter": {
-                                "visible": true,
-                                "tags": ['center'],
-                                "css": {
-                                        "textAlign": 'center'
-                                },
-                                "tooltip": "Justify Center"
-                        },
-                        "justifyRight": {
-                                "visible": true,
-                                "css": {
-                                        "textAlign": 'right'
-                                },
-                                "tooltip": "Justify Right"
-                        },
-                        "justifyFull": {
-                                "visible": true,
-                                "css": {
-                                        "textAlign": 'justify'
-                                },
-                                "tooltip": "Justify Full"
-                        },
-
-                        separator01: {
-                                "visible": true,
-                                "separator": true
-                        },
-
-                        "indent": {
-                                "visible": true,
-                                "tooltip": "Indent"
-                        },
-                        "outdent": {
-                                "visible": true,
-                                "tooltip": "Outdent"
-                        },
-
-                        separator02: {
-                                "visible": false,
-                                "separator": true
-                        },
-
-                        "subscript": {
-                                "visible": true,
-                                "tags": ['sub'],
-                                "tooltip": "Subscript"
-                        },
-                        "superscript": {
-                                "visible": true,
-                                "tags": ['sup'],
-                                "tooltip": "Superscript"
-                        },
-
-                        separator03: {
-                                "visible": true,
-                                "separator": true
-                        },
-
-                        "undo": {
-                                "visible": true,
-                                "tooltip": "Undo"
-                        },
-                        "redo": {
-                                "visible": true,
-                                "tooltip": "Redo"
-                        },
-
-                        separator04: {
-                                "visible": true,
-                                "separator": true
-                        },
-
-                        "insertOrderedList": {
-                                "visible": true,
-                                "tags": ['ol'],
-                                "tooltip": "Insert Ordered List"
-                        },
-                        "insertUnorderedList": {
-                                "visible": true,
-                                "tags": ['ul'],
-                                "tooltip": "Insert Unordered List"
-                        },
-                        "insertHorizontalRule": {
-                                "visible": true,
-                                "tags": ['hr'],
-                                "tooltip": "Insert Horizontal Rule"
-                        },
-
-                        separator05: {
-                                "separator": true
-                        },
-
-                        "createLink": {
-                                "visible": true,
-                                "exec": function ()
-                                {
-                                        var selection = $(this.editor).documentSelection();
-
-                                        if (selection.length > 0)
-                                        {
-                                                if ($.browser.msie)
-                                                {
-                                                        this.focus();
-                                                        this.editorDoc.execCommand('createLink', true, null);
-                                                }
-                                                else
-                                                {
-                                                        var szURL = prompt('URL', 'http://');
-
-                                                        if (szURL && szURL.length > 0)
-                                                        {
-                                                                this.editorDoc.execCommand('unlink', false, []);
-                                                                this.editorDoc.execCommand('createLink', false, szURL);
-                                                        }
-                                                }
-                                        }
-                                        else if (this.options.messages.nonSelection)
-                                        {
-                                                alert(this.options.messages.nonSelection);
-                                        }
-                                },
-                                "tags": ['a'],
-                                "tooltip": "Create link"
-                        },
-
-                        "insertImage": {
-                                "visible": true,
-                                "exec": function ()
-                                {
-                                        if ($.browser.msie)
-                                        {
-                                                this.focus();
-                                                this.editorDoc.execCommand('insertImage', true, null);
-                                        }
-                                        else
-                                        {
-                                                var szURL = prompt('URL', 'http://');
-
-                                                if (szURL && szURL.length > 0)
-                                                {
-                                                        this.editorDoc.execCommand('insertImage', false, szURL);
-                                                }
-                                        }
-                                },
-                                "tags": ['img'],
-                                "tooltip": "Insert image"
-                        },
-                        "insertTable": {
-                                "visible": true,
-                                "exec": function ()
-                                {
-                                	
-                                        if ($.modal)
-                                        {
-                                                var self = this;
-                                                $.modal($.fn.wysiwyg.defaults.formHtml, {
-                                                        onShow: function(dialog)
-                                                        {
-                                                                $('input:submit', dialog.data).click(function(e)
-                                                                {
-                                                                        e.preventDefault();
-                                                                        var rowCount = $('input[name="rowCount"]', dialog.data).val();
-                                                                        var colCount = $('input[name="colCount"]', dialog.data).val();
-                                                                        self.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
-                                                                        $.modal.close();
-                                                                });
-                                                                $('input:reset', dialog.data).click(function(e)
-                                                                {
-                                                                        e.preventDefault();
-                                                                        $.modal.close();
-                                                                });
-                                                        },
-                                                        maxWidth: $.fn.wysiwyg.defaults.formWidth,
-                                                        maxHeight: $.fn.wysiwyg.defaults.formHeight,
-                                                        overlayClose: true
-                                                });
-                                        }
-                                        else
-                                        {
-                                                var colCount = prompt('Count of columns', '3');
-                                                var rowCount = prompt('Count of rows', '3');
-                                                this.insertTable(colCount, rowCount, $.fn.wysiwyg.defaults.tableFiller);
-                                        }
-                                },
-                                "tags": ['table'],
-                                "tooltip": "Insert table"
-                        },
-
-                        separator06: {
-                                "separator": true
-                        },
-
-                        "h1mozilla": {
-                                "visible": true && $.browser.mozilla,
-                                "className": 'h1',
-                                "command": 'heading',
-                                arguments: ['h1'],
-                                "tags": ['h1'],
-                                "tooltip": "Header 1"
-                        },
-                        "h2mozilla": {
-                                "visible": true && $.browser.mozilla,
-                                "className": 'h2',
-                                "command": 'heading',
-                                arguments: ['h2'],
-                                "tags": ['h2'],
-                                "tooltip": "Header 2"
-                        },
-                        "h3mozilla": {
-                                "visible": true && $.browser.mozilla,
-                                "className": 'h3',
-                                "command": 'heading',
-                                arguments: ['h3'],
-                                "tags": ['h3'],
-                                "tooltip": "Header 3"
-                        },
-
-                        "h1": {
-                                "visible": true && !($.browser.mozilla),
-                                "className": 'h1',
-                                "command": 'formatBlock',
-                                arguments: ['<H1>'],
-                                "tags": ['h1'],
-                                "tooltip": "Header 1"
-                        },
-                        "h2": {
-                                "visible": true && !($.browser.mozilla),
-                                "className": 'h2',
-                                "command": 'formatBlock',
-                                arguments: ['<H2>'],
-                                "tags": ['h2'],
-                                "tooltip": "Header 2"
-                        },
-                        "h3": {
-                                "visible": true && !($.browser.mozilla),
-                                "className": 'h3',
-                                "command": 'formatBlock',
-                                arguments: ['<H3>'],
-                                "tags": ['h3'],
-                                "tooltip": "Header 3"
-                        },
-
-                        separator07: {
-                                "visible": false,
-                                "separator": true
-                        },
-
-                        "cut": {
-                                "visible": false,
-                                "tooltip": "Cut"
-                        },
-                        "copy": {
-                                "visible": false,
-                                "tooltip": "Copy"
-                        },
-                        "paste": {
-                                "visible": false,
-                                "tooltip": "Paste"
-                        },
-
-                        separator08: {
-                                "separator": false && !($.browser.msie)
-                        },
-
-                        "increaseFontSize": {
-                                "visible": false && !($.browser.msie),
-                                "tags": ['big'],
-                                "tooltip": "Increase font size"
-                        },
-                        "decreaseFontSize": {
-                                "visible": false && !($.browser.msie),
-                                "tags": ['small'],
-                                "tooltip": "Decrease font size"
-                        },
-
-                        separator09: {
-                                "separator": true
-                        },
-
-                        "html": {
-                                "visible": false,
-                                "exec": function ()
-                                {
-                                        if (this.viewHTML)
-                                        {
-                                                this.setContent($(this.original).val());
-                                                $(this.original).hide();
-                                        }
-                                        else
-                                        {
-                                                this.saveContent();
-                                                $(this.original).show();
-                                        }
-
-                                        this.viewHTML = !(this.viewHTML);
-                                },
-                                "tooltip": "View source code"
-                        },
-
-                        "removeFormat": {
-                                "visible": true,
-                                "exec": function ()
-                                {
-                                        if ($.browser.msie)
-                                        {
-                                                this.focus();
-                                        }
-                                        this.editorDoc.execCommand('removeFormat', false, []);
-                                        this.editorDoc.execCommand('unlink', false, []);
-                                },
-                                "tooltip": "Remove formatting"
-                        }
                 }
         });
 
@@ -1014,6 +962,7 @@
                                 }
                                 else
                                 {
+                                        self.focus();
                                         self.withoutCss();
                                         self.editorDoc.execCommand(cmd, false, args);
                                 }

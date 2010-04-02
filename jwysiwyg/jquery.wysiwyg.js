@@ -171,7 +171,7 @@
                 },
                 justifyLeft: {
                         visible: true,
-                        separated: true,
+                        groupIndex: 1,
                         css: {
                                 textAlign: 'left'
                         },
@@ -200,7 +200,7 @@
                         tooltip: 'Justify Full'
                 },
                 indent: {
-                        separated: true,
+                        groupIndex: 2,
                         visible: true,
                         tooltip: 'Indent'
                 },
@@ -209,7 +209,7 @@
                         tooltip: 'Outdent'
                 },
                 subscript: {
-                        separated: true,
+                        groupIndex: 3,
                         visible: true,
                         tags: ['sub'],
                         tooltip: 'Subscript'
@@ -220,7 +220,7 @@
                         tooltip: 'Superscript'
                         },
                 undo: {
-                        separated: true,
+                        groupIndex: 4,
                         visible: true,
                         tooltip: 'Undo'
                 },
@@ -229,7 +229,7 @@
                         tooltip: 'Redo'
                 },
                 insertOrderedList: {
-                        separated: true,
+                        groupIndex: 5,
                         visible: true,
                         tags: ['ol'],
                         tooltip: 'Insert Ordered List'
@@ -245,7 +245,7 @@
                         tooltip: 'Insert Horizontal Rule'
                 },
                 createLink: {
-                        separated: true,
+                        groupIndex: 6,
                         visible: true,
                         exec: function ()
                         {
@@ -338,7 +338,7 @@
                 },
                 h1: {
                         visible: true,
-                        separated: true,
+                        groupIndex: 7,
                         className: 'h1',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
                         arguments: [$.browser.msie ? '<h1>' : 'h1'],
@@ -362,7 +362,7 @@
                         tooltip: 'Header 3'
                 },
                 cut: {
-                        separated: true,
+                        groupIndex: 8,
                         visible: false,
                         tooltip: 'Cut'
                         },
@@ -375,7 +375,7 @@
                         tooltip: 'Paste'
                 },
                 increaseFontSize: {
-                        separated: true,
+                        groupIndex: 9,
                         visible: false && !($.browser.msie),
                         tags: ['big'],
                         tooltip: 'Increase font size'
@@ -385,8 +385,21 @@
                         tags: ['small'],
                         tooltip: 'Decrease font size'
                 },
+                removeFormat: {
+                         visible: true,
+                         exec: function ()
+                         {
+                                if ($.browser.msie)
+                                {
+                                        this.focus();
+                                }
+                                this.editorDoc.execCommand('removeFormat', false, []);
+                                this.editorDoc.execCommand('unlink', false, []);
+                         },
+                         tooltip: 'Remove formatting'
+                },
                 html: {
-                        separated: true,
+                        groupIndex: 10,
                         visible: false,
                         exec: function ()
                         {
@@ -404,19 +417,6 @@
                                 this.viewHTML = !(this.viewHTML);
                          },
                          tooltip: 'View source code'
-                },
-                removeFormat: {
-                         visible: true,
-                         exec: function ()
-                         {
-                                if ($.browser.msie)
-                                {
-                                        this.focus();
-                                }
-                                this.editorDoc.execCommand('removeFormat', false, []);
-                                this.editorDoc.execCommand('unlink', false, []);
-                         },
-                         tooltip: 'Remove formatting'
                 }
         };
 
@@ -955,20 +955,25 @@
 
                 appendControls: function ()
                 {
+                        
+                        var currentGroupIndex  = 0;
+                        var hasVisibleControls = true; // to prevent separator before first item
                         for (var name in this.options.controls)
                         {
                                 var control = this.options.controls[name];
+                                if (control.groupIndex && currentGroupIndex != control.groupIndex)
+                                {
+                                        currentGroupIndex = control.groupIndex;
+                                        hasVisibleControls = false;
+                                }
                                 if (!control.visible)
                                 {
                                         continue;
                                 }
-                                if (control.separator || control.separated)
+                                if (!hasVisibleControls)
                                 {
                                         this.appendMenuSeparator();
-                                }
-                                if (control.separator)
-                                {
-                                        continue;
+                                        hasVisibleControls = true;
                                 }
                                 this.appendMenu(
                                         control.command || name,

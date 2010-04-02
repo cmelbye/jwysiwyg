@@ -294,7 +294,7 @@
                                                                 var title = $('input[name="title"]', dialog.data).val();
                                                                 var description = $('input[name="description"]', dialog.data).val();
                                                                 var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-                                                                self.editorDoc.execCommand('insertHtml', false, img);
+                                                                self.insertHtml(img);
                                                                 $.modal.close();
                                                         });
                                                         $('input:reset', dialog.data).click(function(e)

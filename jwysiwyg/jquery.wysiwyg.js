@@ -119,9 +119,10 @@
 
         $.fn.wysiwyg.defaults = {
                 html: '<' + '?xml version="1.0" encoding="UTF-8"?' + '><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
-                formHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label>Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
+                formTable: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label>Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
+                formImage:'<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Title: <input type="text" name="title" value="" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
                 formWidth: 440,
-                formHeight: 220,
+                formHeight: 270,
                 tableFiller: 'Lorem ipsum',
                 css: { },
                 debug: false,
@@ -280,19 +281,48 @@
                         visible: true,
                         exec: function ()
                         {
-                                if ($.browser.msie)
+                        		if ($.modal)
                                 {
-                                        this.focus();
-                                        this.editorDoc.execCommand('insertImage', true, null);
+                                	var self = this;
+                                        $.modal($.fn.wysiwyg.defaults.formImage, {
+                                                onShow: function(dialog)
+                                                {
+                                                        $('input:submit', dialog.data).click(function(e)
+                                                        {
+                                                                e.preventDefault();
+                                                                var szURL = $('input[name="url"]', dialog.data).val();
+                                                                var title = $('input[name="title"]', dialog.data).val();
+                                                                var description = $('input[name="description"]', dialog.data).val();
+                                                                var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+                                                                self.editorDoc.execCommand('insertHtml', false, img);
+                                                                $.modal.close();
+                                                        });
+                                                        $('input:reset', dialog.data).click(function(e)
+                                                        {
+                                                                e.preventDefault();
+                                                                $.modal.close();
+                                                        });
+                                                },
+                                                maxWidth: $.fn.wysiwyg.defaults.formWidth,
+                                                maxHeight: $.fn.wysiwyg.defaults.formHeight,
+                                                overlayClose: true
+                                        });
+                                }else{
+                                	if ($.browser.msie)
+	                                {
+	                                        this.focus();
+	                                        this.editorDoc.execCommand('insertImage', true, null);
+	                                }
+	                                else
+	                                {
+	                                        var szURL = prompt('URL', 'http://');
+	                                        if (szURL && szURL.length > 0)
+	                                        {
+	                                                this.editorDoc.execCommand('insertImage', false, szURL);
+	                                        }
+	                                }
                                 }
-                                else
-                                {
-                                        var szURL = prompt('URL', 'http://');
-                                        if (szURL && szURL.length > 0)
-                                        {
-                                                this.editorDoc.execCommand('insertImage', false, szURL);
-                                        }
-                                }
+                                
                         },
                         tags: ['img'],
                         tooltip: 'Insert image'
@@ -304,7 +334,7 @@
                                 if ($.modal)
                                 {
                                         var self = this;
-                                        $.modal($.fn.wysiwyg.defaults.formHtml, {
+                                        $.modal($.fn.wysiwyg.defaults.formTable, {
                                                 onShow: function(dialog)
                                                 {
                                                         $('input:submit', dialog.data).click(function(e)

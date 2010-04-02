@@ -169,12 +169,9 @@
                         },
                         tooltip: 'Underline'
                 },
-                separator00: {
-                        visible: true,
-                        separator: true
-                },
                 justifyLeft: {
                         visible: true,
+                        separated: true,
                         css: {
                                 textAlign: 'left'
                         },
@@ -202,11 +199,8 @@
                         },
                         tooltip: 'Justify Full'
                 },
-                separator01: {
-                        visible: true,
-                        separator: true
-                },
                 indent: {
+                        separated: true,
                         visible: true,
                         tooltip: 'Indent'
                 },
@@ -214,11 +208,8 @@
                         visible: true,
                         tooltip: 'Outdent'
                 },
-                separator02: {
-                        visible: false,
-                        separator: true
-                },
                 subscript: {
+                        separated: true,
                         visible: true,
                         tags: ['sub'],
                         tooltip: 'Subscript'
@@ -228,11 +219,8 @@
                         tags: ['sup'],
                         tooltip: 'Superscript'
                         },
-                separator03: {
-                        visible: true,
-                        separator: true
-                },
                 undo: {
+                        separated: true,
                         visible: true,
                         tooltip: 'Undo'
                 },
@@ -240,11 +228,8 @@
                         visible: true,
                         tooltip: 'Redo'
                 },
-                separator04: {
-                        visible: true,
-                        separator: true
-                },
                 insertOrderedList: {
+                        separated: true,
                         visible: true,
                         tags: ['ol'],
                         tooltip: 'Insert Ordered List'
@@ -259,10 +244,8 @@
                         tags: ['hr'],
                         tooltip: 'Insert Horizontal Rule'
                 },
-                separator05: {
-                        separator: true
-                },
                 createLink: {
+                        separated: true,
                         visible: true,
                         exec: function ()
                         {
@@ -353,11 +336,9 @@
                         tags: ['table'],
                         tooltip: 'Insert table'
                 },
-                separator06: {
-                        separator: true
-                },
                 h1: {
                         visible: true,
+                        separated: true,
                         className: 'h1',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
                         arguments: [$.browser.msie ? '<h1>' : 'h1'],
@@ -380,11 +361,8 @@
                         tags: ['h3'],
                         tooltip: 'Header 3'
                 },
-                separator07: {
-                        visible: false,
-                        separator: true
-                },
                 cut: {
+                        separated: true,
                         visible: false,
                         tooltip: 'Cut'
                         },
@@ -396,10 +374,8 @@
                         visible: false,
                         tooltip: 'Paste'
                 },
-                separator08: {
-                        separator: false && !($.browser.msie)
-                },
                 increaseFontSize: {
+                        separated: true,
                         visible: false && !($.browser.msie),
                         tags: ['big'],
                         tooltip: 'Increase font size'
@@ -409,10 +385,8 @@
                         tags: ['small'],
                         tooltip: 'Decrease font size'
                 },
-                separator09: {
-                        separator: true
-                },
                 html: {
+                        separated: true,
                         visible: false,
                         exec: function ()
                         {
@@ -984,19 +958,25 @@
                         for (var name in this.options.controls)
                         {
                                 var control = this.options.controls[name];
-
+                                if (!control.visible)
+                                {
+                                        continue;
+                                }
+                                if (control.separator || control.separated)
+                                {
+                                        this.appendMenuSeparator();
+                                }
                                 if (control.separator)
                                 {
-                                        if (control.visible !== false)
-                                        {
-                                                this.appendMenuSeparator();
-                                        }
+                                        continue;
                                 }
-                                else if (control.visible)
-                                {
-                                        this.appendMenu(
-                                        control.command || name, control.arguments || [], control.className || control.command || name || 'empty', control.exec, control.tooltip || control.command || name || '');
-                                }
+                                this.appendMenu(
+                                        control.command || name,
+                                        control.arguments || [],
+                                        control.className || control.command || name || 'empty',
+                                        control.exec,
+                                        control.tooltip || control.command || name || ''
+                                );
                         }
                 },
 

@@ -96,7 +96,7 @@
                         delete options['controls'];
                 }
 
-                options = $.extend($.fn.wysiwyg.defaults, options);
+                options = $.extend({}, $.fn.wysiwyg.defaults, options);
                 options.controls = $.extend(true, options.controls, $.fn.wysiwyg.controls);
                 for (var control in controls)
                 {

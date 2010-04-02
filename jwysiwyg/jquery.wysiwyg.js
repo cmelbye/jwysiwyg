@@ -67,7 +67,7 @@
                         }
                         if (action == 'enabled')
                         {
-                                return this.data('wysiwyg') != null;
+                                return this.data('wysiwyg') !== null;
                         }
                         if (action in Wysiwyg)
                         {
@@ -90,10 +90,10 @@
                  * If the user set custom controls, we catch it, and merge with the
                  * defaults controls later.
                  */
-                if (options && options['controls'])
+                if (options && options.controls)
                 {
-                        controls = options['controls'];
-                        delete options['controls'];
+                        controls = options.controls;
+                        delete options.controls;
                 }
 
                 options = $.extend({}, $.fn.wysiwyg.defaults, options);
@@ -281,9 +281,9 @@
                         visible: true,
                         exec: function ()
                         {
-                        		if ($.modal)
+                                if ($.modal)
                                 {
-                                	var self = this;
+                                        var self = this;
                                         $.modal($.fn.wysiwyg.defaults.formImageHtml, {
                                                 onShow: function(dialog)
                                                 {
@@ -307,8 +307,10 @@
                                                 maxHeight: $.fn.wysiwyg.defaults.formHeight,
                                                 overlayClose: true
                                         });
-                                }else{
-                                	if ($.browser.msie)
+                                }
+                                else
+                                {
+                                        if ($.browser.msie)
 	                                {
 	                                        this.focus();
 	                                        this.editorDoc.execCommand('insertImage', true, null);
@@ -371,7 +373,7 @@
                         groupIndex: 7,
                         className: 'h1',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        arguments: [$.browser.msie ? '<h1>' : 'h1'],
+                        'arguments': [$.browser.msie ? '<h1>' : 'h1'],
                         tags: ['h1'],
                         tooltip: 'Header 1'
                 },
@@ -379,7 +381,7 @@
                         visible: true,
                         className: 'h2',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        arguments: [$.browser.msie ? '<h2>' : 'h2'],
+                        'arguments': [$.browser.msie ? '<h2>' : 'h2'],
                         tags: ['h2'],
                         tooltip: 'Header 2'
                 },
@@ -387,7 +389,7 @@
                         visible: true,
                         className: 'h3',
                         command: $.browser.msie ? 'FormatBlock' : 'heading',
-                        arguments: [$.browser.msie ? '<h3>' : 'h3'],
+                        'arguments': [$.browser.msie ? '<h3>' : 'h3'],
                         tags: ['h3'],
                         tooltip: 'Header 3'
                 },
@@ -560,7 +562,10 @@
 
                 removeFormat: function ()
                 {
-                        if ($.browser.msie) this.focus();
+                        if ($.browser.msie)
+                        {
+                                this.focus();
+                        }
                         this.editorDoc.execCommand('removeFormat', false, []);
                         this.editorDoc.execCommand('unlink', false, []);
                 },
@@ -592,11 +597,11 @@
                         {
                                 this.original = element;
 
-                                if (newX == 0 && element.cols)
+                                if (newX === 0 && element.cols)
                                 {
                                         newX = (element.cols * 8) + 21;
                                 }
-                                if (newY == 0 && element.rows)
+                                if (newY === 0 && element.rows)
                                 {
                                         newY = (element.rows * 16) + 16;
                                 }
@@ -896,9 +901,9 @@
                         {
                                 return;
                         }
-                        colCount = parseInt(colCount);
-                        rowCount = parseInt(rowCount);
-                        if (filler == null)
+                        colCount = parseInt(colCount, 10);
+                        rowCount = parseInt(rowCount, 10);
+                        if (filler === null)
                         {
                                 filler = '&nbsp;';
                         }
@@ -1007,7 +1012,7 @@
                                 }
                                 this.appendMenu(
                                         control.command || name,
-                                        control.arguments || [],
+                                        control['arguments'] || [],
                                         control.className || control.command || name || 'empty',
                                         control.exec,
                                         control.tooltip || control.command || name || ''

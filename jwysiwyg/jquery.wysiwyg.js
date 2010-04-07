@@ -24,7 +24,7 @@
                 this.init(element, options);
         };
 
-        $.fn.document = function ()
+        $.fn.innerDocument = function ()
         {
                 var element = this.get(0);
 
@@ -609,7 +609,7 @@
                                 {
                                         minHeight: (newY - 6).toString() + 'px',
                                         width: (newX - 8).toString() + 'px'
-                                }).attr('id', $(element).attr('id') + 'IFrame').attr('frameborder', '0');
+                                }).attr('frameborder', '0');
 
                                 /**
                                  * http://code.google.com/p/jwysiwyg/issues/detail?id=96
@@ -653,11 +653,6 @@
                         this.initialContent = $(element).val();
                         this.initFrame();
 
-                        if (this.initialContent.length === 0)
-                        {
-                                this.setContent('');
-                        }
-
                         /**
                          * http://code.google.com/p/jwysiwyg/issues/detail?id=100
                          */
@@ -691,23 +686,10 @@
                                 style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
                         }
 
-                        this.editorDoc = $(this.editor).document();
+                        this.editorDoc = $(this.editor).innerDocument();
                         this.editorDoc_designMode = false;
 
-                        try
-                        {
-                                this.editorDoc.designMode = 'on';
-                                this.editorDoc_designMode = true;
-                        }
-                        catch (e)
-                        {
-                                // Will fail on Gecko if the editor is placed in an hidden container element
-                                // The design mode will be set ones the editor is focused
-                                $(this.editorDoc).focus(function ()
-                                {
-                                        self.designMode();
-                                });
-                        }
+                        this.designMode();
 
                         this.editorDoc.open();
                         this.editorDoc.write(
@@ -723,8 +705,6 @@
                                 return style;
                         }));
                         this.editorDoc.close();
-
-                        this.editorDoc.contentEditable = 'true';
 
                         if ($.browser.msie)
                         {
@@ -832,21 +812,41 @@
                                         }
                                 }, 0);
                         }
+
+                        if (this.initialContent.length === 0)
+                        {
+                                this.setContent('');
+                        }
                 },
 
                 designMode: function ()
                 {
-                        if (!(this.editorDoc_designMode))
+                        var attempts = 3;
+                        var runner;
+                        var self = this;
+                        var doc  = this.editorDoc;
+                        runner = function()
                         {
+                                if ($(self.editor).innerDocument() !== doc)
+                                {
+                                        self.initFrame();
+                                        return;
+                                }
                                 try
                                 {
-                                        this.editorDoc.designMode = 'on';
-                                        this.editorDoc_designMode = true;
+                                        doc.designMode = 'on';
                                 }
                                 catch (e)
                                 {
                                 }
-                        }
+                                attempts--;
+                                if (attempts > 0 && $.browser.mozilla)
+                                {
+                                        setTimeout(runner, 100);
+                                }
+                        };
+                        runner();
+                        this.editorDoc_designMode = true;
                 },
 
                 getSelection: function ()
@@ -868,12 +868,12 @@
 
                 getContent: function ()
                 {
-                        return $($(this.editor).document()).find('body').html();
+                        return $($(this.editor).innerDocument()).find('body').html();
                 },
 
                 setContent: function (newContent)
                 {
-                        $($(this.editor).document()).find('body').html(newContent);
+                        $($(this.editor).innerDocument()).find('body').html(newContent);
                 },
                 insertHtml: function (szHTML)
                 {

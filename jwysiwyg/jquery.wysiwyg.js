@@ -545,6 +545,12 @@
                         self.saveContent();
                 },
 
+                "document": function()
+                {
+                        var self = $.data(this, 'wysiwyg');
+                        return $(self.editorDoc);
+                },
+
                 destroy: function ()
                 {
                         var self = $.data(this, 'wysiwyg');

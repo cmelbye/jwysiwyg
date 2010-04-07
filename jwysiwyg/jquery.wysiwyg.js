@@ -24,9 +24,9 @@
                 this.init(element, options);
         };
 
-        $.fn.innerDocument = function ()
+        var innerDocument = function (elts)
         {
-                var element = this.get(0);
+                var element = $(elts).get(0);
 
                 if (element.nodeName.toLowerCase() == 'iframe')
                 {
@@ -37,7 +37,7 @@
                          : element.contentWindow.document // contentDocument;
                          */
                 }
-                return this;
+                return element;
         };
 
         $.fn.documentSelection = function ()
@@ -686,7 +686,7 @@
                                 style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
                         }
 
-                        this.editorDoc = $(this.editor).innerDocument();
+                        this.editorDoc = innerDocument(this.editor);
                         this.editorDoc_designMode = false;
 
                         this.designMode();
@@ -827,7 +827,7 @@
                         var doc  = this.editorDoc;
                         runner = function()
                         {
-                                if ($(self.editor).innerDocument() !== doc)
+                                if (innerDocument(self.editor) !== doc)
                                 {
                                         self.initFrame();
                                         return;
@@ -868,12 +868,12 @@
 
                 getContent: function ()
                 {
-                        return $($(this.editor).innerDocument()).find('body').html();
+                        return $(innerDocument(this.editor)).find('body').html();
                 },
 
                 setContent: function (newContent)
                 {
-                        $($(this.editor).innerDocument()).find('body').html(newContent);
+                        $(innerDocument(this.editor)).find('body').html(newContent);
                 },
                 insertHtml: function (szHTML)
                 {

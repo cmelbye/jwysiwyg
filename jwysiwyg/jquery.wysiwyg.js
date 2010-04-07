@@ -135,6 +135,7 @@
                 {
                         nonSelection: 'select the text you wish to link'
                 },
+                events: { },
                 controls: { }
         };
         $.fn.wysiwyg.controls = {
@@ -823,6 +824,11 @@
                         {
                                 this.setContent('');
                         }
+
+                        $.each(this.options.events, function(key, handler)
+                        {
+                                $(self.editorDoc).bind(key, handler);
+                        });
                 },
 
                 designMode: function ()

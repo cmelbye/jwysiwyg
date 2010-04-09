@@ -11,6 +11,8 @@ h2. Supports
 
 "SimpleModal":http://www.ericmmartin.com/projects/simplemodal/ for insertTable and insertImage buttons.
 
+"jQuery UI Resizable":http://jqueryui.com/demos/resizable/ for resize of editor.
+
 h2. Tested with
 
 Tested in Safari 4, Firefox 3.5, Chrome 4.0, Internet Explorer 8.

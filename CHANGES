@@ -2,7 +2,9 @@
 
 + enabled, destroy, removeFormat, save actions added to $('#elt').wysiwyg(action) - fomojola
 + insertTable action/button added - academo
-+ insertTable and insertImage nuttons now support SimpleModal plugin - academo
++ insertTable and insertImage buttons now support SimpleModal plugin - academo
++ Event handlers supported through events - akzhan.abdulin
++ Editor now supports jQuery UI resizable plugin through resizeOptions - akzhan.abdulin
 * MSG_EN abd TOOLBAR replaced with $.fn.wysiwyg.defaults/controls - akzhan.abdulin
 * separators replaced with group indexes - akzhan.abdulin
 * Directory structure reorganized - academo

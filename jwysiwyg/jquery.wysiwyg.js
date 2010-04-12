@@ -319,7 +319,8 @@
                                             modal: true,
                                             width: $.fn.wysiwyg.defaults.formWidth,
                                             height: $.fn.wysiwyg.defaults.formHeight,
-                                            open: function(event, ui){
+                                            open: function(ev, ui)
+                                            {
                                                  $('input:submit', $(this)).click(function(e)
                                                  {
                                                        e.preventDefault();
@@ -336,7 +337,7 @@
                                                                 $(dialog).dialog("close");
                                                         });
                                             },
-                                            close: function(event, ui){
+                                            close: function(ev, ui){
         		                                  $(this).dialog("destroy");
 
                                             }

@@ -15,6 +15,20 @@
 
 (function ($)
 {
+        var api = {
+               internals: {}, // can be called inside plugin run.
+               methods: {}, // can be called through $().wysiwyg(name, args).
+               defaults: {}, // plugins add defaults to be overriden
+               messages: {
+                       unknown_method: 'Unknown method'
+               } // i18n
+        };
+
+        api.buildIFrameHtml = function(content, headTags)
+        {
+               return '<' + '?xml version="1.0" encoding="UTF-8"?' + '><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">' + headTags + '</head><body style="margin: 0px;">' + content + '</body></html>';
+        };
+
         var innerDocument = function (elts)
         {
                 var element = $(elts).get(0);
@@ -45,50 +59,24 @@
                 }
         };
 
-        $.fn.wysiwyg = function (options)
+        // Plugin framework
+
+        // they register self through registerPlugin here.
+        var availablePlugins = {};
+
+        var registerPlugin = function(data)
         {
+                availablePlugins[data.name] = data;
+                // do more
         };
 
-        $.fn.wysiwyg.internals = {
-                innerDocument: innerDocument,
-                documentSelection: documentSelection
-        };
-
-        $.fn.wysiwyg.methods = {
-        };
-
-        $.fn.wysiwyg.defaults = {
-                html: '<' + '?xml version="1.0" encoding="UTF-8"?' + '><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
-                formTableHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
-                formImageHtml:'<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Title: <input type="text" name="imagetitle" value="" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
-                formWidth: 440,
-                formHeight: 270,
-                tableFiller: 'Lorem ipsum',
-                css: { },
-                debug: false,
-                autoSave: true,
-                // http://code.google.com/p/jwysiwyg/issues/detail?id=11
-                rmUnwantedBr: true,
-                // http://code.google.com/p/jwysiwyg/issues/detail?id=15
-                brIE: true,
-                messages:
-                {
-                        nonSelection: 'select the text you wish to link'
-                },
-                events: { },
-                controls: [ ],
-                resizeOptions: false
-        };
-        $.fn.wysiwyg.controlDefinitions = {};
-        $.fn.wysiwyg.availablePlugins = {};
-
-        $.fn.wysiwyg.requirePlugin = function(pluginName, callback)
+        var requirePlugin = function(pluginName, callback)
         {
                 // by default we suppose that they are preloaded by site.
                 callback.call();
         };
 
-        $.fn.wysiwyg.require = function(listOfPlugins, callback)
+        var require = function(listOfPlugins, callback)
         {
                 if (!$.isArray(listOfPlugins))
                 {
@@ -109,8 +97,52 @@
                 });
                 for (var i = counter - 1; i >= 0; i--)
                 {
-                        $.fn.wysiwyg.requirePlugin(listOfPlugins[i], singleCallback);
+                        api.internals.requirePlugin(listOfPlugins[i], singleCallback);
                 }
         };
+
+        // Expose internals
+        $.extend(api.internals, {
+                innerDocument: innerDocument,
+                documentSelection: documentSelection,
+                require: require,
+                requirePlugin: requirePlugin,
+                registerPlugin: registerPlugin
+        });
+
+
+        var isWysiwyg = function()
+        {
+                return this.data('wysiwyg') != null;
+        };
+
+        // Expose methods
+        $.extend(api.methods, {
+                isWysiwyg: isWysiwyg
+        });
+
+        var init = function()
+        {
+                var $this = $(this);
+        };
+
+        $.fn.wysiwyg = function (options)
+        {
+                // construction or call?
+                if (!isWysiwyg.call(this))
+                {
+                        return $(this).each(init);
+                }
+                var methodName = arguments[0];
+                var methodArgs = arguments.length > 1 ? arguments[1] : null;
+                if (!(methodName in api.methods))
+                {
+                        throw api.messages.unknown_method + ': ' + methodName;
+                }
+                return api.methods[methodName].call(this, methodArgs);
+        };
+
+        // expose API
+        $.extend($.fn.wysiwyg, api);
 
 })(jQuery);

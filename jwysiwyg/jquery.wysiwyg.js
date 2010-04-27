@@ -31,9 +31,9 @@
                 return element;
         };
 
-        var documentSelection = function()
+        var documentSelection = function(elts)
         {
-                var element = this.get(0);
+                var element = $(elts).get(0);
 
                 if (element.contentWindow.document.selection)
                 {
@@ -47,6 +47,11 @@
 
         $.fn.wysiwyg = function (options)
         {
+        };
+
+        $.fn.wysiwyg.internals = {
+                innerDocument: innerDocument,
+                documentSelection: documentSelection
         };
 
         $.fn.wysiwyg.methods = {

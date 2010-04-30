@@ -147,13 +147,17 @@
                 runner();
         };
 
-        var initFrame = function($iframe)
+        var initFrame = function($iframe, content)
         {
                 var doc = innerDocument($iframe);
+                var headTags = '';
+                doc.open();
+                doc.write(api.buildIFrameHtml(content, headTags));
+                doc.close();
                 designMode($iframe);
         };
 
-        var createFrame = function($original, content)
+        var createFrame = function($original)
         {
                 var newX = $original.outerWidth || 16;
                 var newY = $original.outerHeight || 16;
@@ -177,7 +181,6 @@
         {
                 var $original = $(this);
                 var content = '';
-                var headTags = '';
                 if (/^TEXTAREA$/i.test(this.tagName))
                 {
                         content = $original.val();
@@ -185,7 +188,7 @@
                 var $editor = $('<div></div>').addClass('wysiwyg');
                 var $iframe = createFrame($original, content).appendTo($editor);
                 $original.replaceWith($editor);
-                initFrame($iframe);
+                initFrame($iframe, content);
         };
 
         var contextCall = function(method, methodArgs)

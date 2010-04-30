@@ -32,17 +32,14 @@
         var innerDocument = function (elts)
         {
                 var element = $(elts).get(0);
-
-                if (element.nodeName.toLowerCase() == 'iframe')
+                try
                 {
                         return element.contentWindow.document;
-                        /*
-                         return ( $.browser.msie )
-                         ? document.frames[element.id].document
-                         : element.contentWindow.document // contentDocument;
-                         */
                 }
-                return element;
+                catch (e)
+                {
+                        return null;
+                }
         };
 
         var documentSelection = function(elts)
@@ -94,7 +91,7 @@
                         {
                                 callback.call();
                         }
-                });
+                };
                 for (var i = counter - 1; i >= 0; i--)
                 {
                         api.internals.requirePlugin(listOfPlugins[i], singleCallback);
@@ -121,9 +118,74 @@
                 isWysiwyg: isWysiwyg
         });
 
+        var initFrame;
+        var designMode = function($iframe)
+        {
+                var doc = innerDocument($iframe);
+                var attempts = 3;
+                var runner;
+                runner = function()
+                {
+                        if (doc !== innerDocument($iframe))
+                        {
+                                initFrame($iframe);
+                                return;
+                        }
+                        try
+                        {
+                                doc.designMode = 'on';
+                        }
+                        catch (e)
+                        {
+                        }
+                        attempts--;
+                        if (attempts > 0 && $.browser.mozilla)
+                        {
+                                setTimeout(runner, 100);
+                        }
+                };
+                runner();
+        };
+
+        var initFrame = function($iframe)
+        {
+                var doc = innerDocument($iframe);
+                designMode($iframe);
+        };
+
+        var createFrame = function($original, content)
+        {
+                var newX = $original.outerWidth || 16;
+                var newY = $original.outerHeight || 16;
+                var $iframe = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>');
+                newX = newX.toString() + 'px';
+                newY = newY.toString() + 'px';
+                $iframe.css({
+                        width: newX,
+                        minHeight: newY
+                });
+                if ($.browser.msie)
+                {
+                        $iframe.css('height', newY);
+                }
+                $iframe.attr('tabindex', $original.attr('tabindex'));
+                $iframe.attr('frameborder', '0');
+                return $iframe;
+        };
+
         var init = function()
         {
-                var $this = $(this);
+                var $original = $(this);
+                var content = '';
+                var headTags = '';
+                if (/^TEXTAREA$/i.test(this.tagName))
+                {
+                        content = $original.val();
+                }
+                var $editor = $('<div></div>').addClass('wysiwyg');
+                var $iframe = createFrame($original, content).appendTo($editor);
+                $original.replaceWith($editor);
+                initFrame($iframe);
         };
 
         var contextCall = function(method, methodArgs)

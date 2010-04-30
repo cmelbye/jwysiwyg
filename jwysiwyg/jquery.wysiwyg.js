@@ -628,6 +628,15 @@
                 }
         });
 
+        var addHoverClass = function()
+        {
+                $(this).addClass('wysiwyg-button-hover');
+        };
+        var removeHoverClass = function()
+        {
+                $(this).removeClass('wysiwyg-button-hover');
+        };
+
         $.extend(Wysiwyg.prototype, {
                 original: null,
                 options: {
@@ -1050,8 +1059,7 @@
                         var self = this;
                         args = args || [];
 
-                        $('<li></li>').append(
-                        $('<a role="menuitem" tabindex="-1" href="javascript:;">' + (className || cmd) + '</a>').addClass(className || cmd).attr('title', tooltip)).click(function ()
+                        $('<li role="menuitem">' + (className || cmd) + '</li>').addClass(className || cmd).attr('title', tooltip).hover(addHoverClass, removeHoverClass).click(function ()
                         {
                                 if (fn)
                                 {

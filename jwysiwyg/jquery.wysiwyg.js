@@ -186,7 +186,7 @@
                         content = $original.val();
                 }
                 var $editor = $('<div></div>').addClass('wysiwyg');
-                var $iframe = createFrame($original, content).appendTo($editor);
+                var $iframe = createFrame($original).appendTo($editor);
                 $original.replaceWith($editor);
                 initFrame($iframe, content);
         };

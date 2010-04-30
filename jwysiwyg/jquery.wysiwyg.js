@@ -113,7 +113,7 @@
 
         var isWysiwyg = function()
         {
-                return this.data('wysiwyg') != null;
+                return this.editor.data('wysiwyg') != null;
         };
 
         // Expose methods
@@ -126,12 +126,20 @@
                 var $this = $(this);
         };
 
+        var contextCall = function(method, methodArgs)
+        {
+                var context = $.extend({
+                        editor: this
+                }, api.internals);
+                mathod.call(context, methodArgs);
+        };
+
         $.fn.wysiwyg = function (options)
         {
                 // construction or call?
-                if (!isWysiwyg.call(this))
+                if (!isWysiwyg.call({ editor: this }))
                 {
-                        return $(this).each(init);
+                        return this.each(init);
                 }
                 var methodName = arguments[0];
                 var methodArgs = arguments.length > 1 ? arguments[1] : null;
@@ -139,7 +147,7 @@
                 {
                         throw api.messages.unknown_method + ': ' + methodName;
                 }
-                return api.methods[methodName].call(this, methodArgs);
+                return contextCall.call(this, api.methods[methodName], methodArgs);
         };
 
         // expose API

@@ -1,5 +1,7 @@
 == master (not tagged yet) ==
 
+* Buttons are unselectable now and have no anchors (CSS reviewed) - mrapczynski
+
 == Version 0.8 (revival) ==
 
 + enabled, destroy, removeFormat, save actions added to $('#elt').wysiwyg(action) - fomojola

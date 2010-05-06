@@ -1,6 +1,7 @@
 == master (not tagged yet) ==
 
 * Buttons are unselectable now and have no anchors (CSS reviewed) - mrapczynski
+* Way to return focus to editor has been corrected - mappam0
 
 == Version 0.8 (revival) ==
 

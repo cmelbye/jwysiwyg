@@ -662,7 +662,7 @@
                 },
                 focus: function ()
                 {
-                        $(this.editorDoc.body).focus();
+                        this.editor.get(0).contentWindow.focus();
                 },
 
                 init: function (element, options)

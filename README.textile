@@ -1,6 +1,6 @@
 h1. jWYSIWYG
 
-Copyright (c) 2009 Juan M Martínez
+Copyright (c) 2009-2010 Juan M Martínez
 Dual licensed under the "MIT":http://github.com/akzhan/jwysiwyg/raw/master/MIT-LICENSE.txt and "GPL2":http://github.com/akzhan/jwysiwyg/raw/master/GPL-LICENSE.txt licenses.
 
 h2. Requires
@@ -9,7 +9,7 @@ h2. Requires
 
 h2. Supports
 
-"SimpleModal":http://www.ericmmartin.com/projects/simplemodal/ for insertTable and insertImage buttons.
+"jQuery UI Dialog":http://jqueryui.com/demos/dialog/ and "SimpleModal":http://www.ericmmartin.com/projects/simplemodal/ for insertTable and insertImage buttons.
 
 "jQuery UI Resizable":http://jqueryui.com/demos/resizable/ for resize of editor.
 

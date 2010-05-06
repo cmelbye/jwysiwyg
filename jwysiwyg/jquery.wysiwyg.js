@@ -1059,7 +1059,7 @@
                         var self = this;
                         args = args || [];
 
-                        $('<li role="menuitem">' + (className || cmd) + '</li>').addClass(className || cmd).attr('title', tooltip).hover(addHoverClass, removeHoverClass).click(function ()
+                        $('<li role="menuitem" UNSELECTABLE="on">' + (className || cmd) + '</li>').addClass(className || cmd).attr('title', tooltip).hover(addHoverClass, removeHoverClass).click(function ()
                         {
                                 if (fn)
                                 {

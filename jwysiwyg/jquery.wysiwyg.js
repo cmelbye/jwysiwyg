@@ -40,7 +40,7 @@
                 return element;
         };
 
-        $.fn.documentSelection = function ()
+        var documentSelection = function ()
         {
                 var element = this.get(0);
 
@@ -252,7 +252,7 @@
                         visible: true,
                         exec: function ()
                         {
-                                var selection = $(this.editor).documentSelection();
+                                var selection = documentSelection.call($(this.editor));
 
                                 if (selection.length > 0)
                                 {
@@ -560,7 +560,7 @@
 
                         if (self.constructor == Wysiwyg && szURL && szURL.length > 0)
                         {
-                                var selection = $(self.editor).documentSelection();
+                                var selection = documentSelection.call($(self.editor));
 
                                 if (selection.length > 0)
                                 {
